@@ -25,6 +25,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('IntimaWell website initialized');
     
+    // Initialize theme system
+    initThemeSystem();
+    
     // Initialize mobile navigation
     initMobileNavigation();
     
@@ -49,8 +52,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize cart count on page load
     updateCartCount();
+    
+    // Initialize product interactions after content loads
+    setTimeout(() => {
+        initProductInteractions();
+    }, 500);
 });
-
 
 // ============================================
 // THEME SYSTEM
@@ -101,20 +108,6 @@ function applyTheme(themeName) {
     // Show notification
     showThemeNotification(themeName);
 }
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    // ... existing initialization ...
-    
-    // Initialize cart and favorites system
-    if (typeof CartFavoritesSystem !== 'undefined') {
-        // Already initialized in cart-favorites.js
-        console.log('Cart & Favorites system initialized');
-    }
-    
-    // ... rest of your initialization ...
-});
-
 
 /**
  * Initialize theme dropdown functionality
@@ -297,6 +290,23 @@ function showThemeNotification(themeName) {
     // Add to document
     document.body.appendChild(notification);
     
+    // Add CSS for animations if not already added
+    if (!document.querySelector('#notification-styles')) {
+        const style = document.createElement('style');
+        style.id = 'notification-styles';
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
     // Remove after animation
     setTimeout(() => {
         if (notification.parentNode) {
@@ -305,40 +315,48 @@ function showThemeNotification(themeName) {
     }, 3000);
 }
 
+/**
+ * Initialize product interactions after content loads
+ */
+function initProductInteractions() {
+    // Update all favorite buttons on the page
+    updateAllFavoriteButtons();
+    
+    // Add event listeners to existing product cards
+    document.querySelectorAll('.product-card').forEach(card => {
+        initProductCardEventListeners(card);
+    });
+}
 
-
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('IntimaWell website initialized');
+/**
+ * Update all favorite buttons on the page
+ */
+function updateAllFavoriteButtons() {
+    const favoriteButtons = document.querySelectorAll('.product-favorite');
     
-    // Initialize mobile navigation
-    initMobileNavigation();
-    
-    // Initialize theme system
-    initThemeSystem();
-    
-    // Initialize age verification
-    initAgeVerification();
-    
-    // Load dynamic content based on current page
-    loadPageContent();
-    
-    // Initialize forms
-    initForms();
-    
-    // Initialize shop functionality if on shop page
-    if (document.querySelector('.shop-products')) {
-        initShop();
-    }
-    
-    // Initialize partners modal if on partners page
-    if (document.querySelector('.partners-grid-section')) {
-        initPartnersModal();
-    }
-    
-    // Initialize cart count on page load
-    updateCartCount();
-});
-
+    favoriteButtons.forEach(button => {
+        const productCard = button.closest('.product-card');
+        if (productCard) {
+            const productId = parseInt(productCard.dataset.id);
+            const isFavorite = window.cartFavoritesSystem 
+                ? window.cartFavoritesSystem.isProductFavorite(productId) 
+                : false;
+            
+            const icon = button.querySelector('i');
+            if (icon) {
+                if (isFavorite) {
+                    icon.classList.add('active');
+                    icon.style.color = 'var(--color-secondary)';
+                    button.classList.add('active');
+                } else {
+                    icon.classList.remove('active');
+                    icon.style.color = '';
+                    button.classList.remove('active');
+                }
+            }
+        }
+    });
+}
 
 // ============================================
 // 2. MOBILE NAVIGATION
@@ -362,10 +380,12 @@ function initMobileNavigation() {
     });
     
     // Close mobile menu
-    mobileMenuClose.addEventListener('click', function() {
-        mobileNav.classList.remove('active');
-        document.body.style.overflow = ''; // Restore scrolling
-    });
+    if (mobileMenuClose) {
+        mobileMenuClose.addEventListener('click', function() {
+            mobileNav.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
+        });
+    }
     
     // Close mobile menu when clicking on a link
     const mobileNavLinks = document.querySelectorAll('.mobile-nav-list a');
@@ -460,8 +480,7 @@ const mockProducts = [
         badge: "Bestseller",
         images: [
             "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=400&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w-400&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w-400&h=400&fit=crop"
+            "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=400&fit=crop"
         ],
         sizes: [
             { name: "S", stock: 5, default: true },
@@ -483,9 +502,9 @@ const mockProducts = [
         category: "couples",
         badge: "New",
         images: [
-            "https://images.unsplash.com/photo-1576086213369-97a306d36557?w-400&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w-400&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?w-400&h=400&fit=crop"
+            "https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400&h=400&fit=crop",
+            "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=400&fit=crop",
+            "https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?w=400&h=400&fit=crop"
         ],
         sizes: [
             { name: "Standard", stock: 12, default: true },
@@ -503,8 +522,8 @@ const mockProducts = [
         price: 59.99,
         category: "wellness",
         images: [
-            "https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?w-400&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1576086213369-97a306d36557?w-400&h=400&fit=crop"
+            "https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?w=400&h=400&fit=crop",
+            "https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400&h=400&fit=crop"
         ],
         sizes: [
             { name: "One Size", stock: 15, default: true }
@@ -520,9 +539,9 @@ const mockProducts = [
         category: "premium",
         badge: "Premium",
         images: [
-            "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w-400&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w-400&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w-400&h=400&fit=crop"
+            "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=400&fit=crop",
+            "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=400&h=400&fit=crop",
+            "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=400&fit=crop"
         ],
         sizes: [
             { name: "S", stock: 7, default: true },
@@ -543,8 +562,8 @@ const mockProducts = [
         price: 79.99,
         category: "wellness",
         images: [
-            "https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?w-400&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1576086213369-97a306d36557?w-400&h=400&fit=crop"
+            "https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?w=400&h=400&fit=crop",
+            "https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400&h=400&fit=crop"
         ],
         sizes: [
             { name: "Kit", stock: 20, default: true }
@@ -562,7 +581,7 @@ const mockProducts = [
         category: "safety",
         badge: "Essential",
         images: [
-            "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w-400&h=400&fit=crop"
+            "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=400&fit=crop"
         ],
         sizes: [
             { name: "Small Pack", stock: 25, default: true },
@@ -579,9 +598,9 @@ const mockProducts = [
         category: "premium",
         badge: "Luxury",
         images: [
-            "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w-400&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w-400&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w-400&h=400&fit=crop"
+            "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=400&h=400&fit=crop",
+            "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=400&fit=crop",
+            "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=400&fit=crop"
         ],
         sizes: [
             { name: "Standard", stock: 3, default: true },
@@ -600,9 +619,9 @@ const mockProducts = [
         category: "couples",
         badge: "Smart",
         images: [
-            "https://images.unsplash.com/photo-1576086213369-97a306d36557?w-400&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?w-400&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w-400&h=400&fit=crop"
+            "https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400&h=400&fit=crop",
+            "https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?w=400&h=400&fit=crop",
+            "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=400&h=400&fit=crop"
         ],
         sizes: [
             { name: "Set of 2", stock: 6, default: true }
@@ -613,173 +632,6 @@ const mockProducts = [
         ]
     }
 ];
-
-
-
-// ============================================
-// INTEGRATE CART & FAVORITES WITH PRODUCT CARDS
-// ============================================
-
-/**
- * Update the product card creation to work with cart/favorites system
- */
-function createProductCard(product) {
-    const card = document.createElement('div');
-    card.className = 'product-card';
-    card.dataset.id = product.id;
-    card.dataset.category = product.category;
-    card.dataset.price = product.price < 50 ? 'low' : (product.price < 150 ? 'medium' : 'high');
-    
-    // Check if product is in favorites
-    const isFavorite = window.cartFavoritesSystem 
-        ? window.cartFavoritesSystem.isProductFavorite(product.id) 
-        : false;
-    
-    // Create sizes HTML
-    let sizesHtml = '';
-    if (product.sizes && product.sizes.length > 0) {
-        sizesHtml = `
-            <div class="product-sizes">
-                <span class="size-label">Size:</span>
-                <div class="size-options">
-                    ${product.sizes.map(size => `
-                        <div class="size-option ${size.stock <= 0 ? 'out-of-stock' : ''} ${size.default ? 'selected' : ''}" 
-                             data-size="${size.name}" 
-                             data-stock="${size.stock}">
-                            ${size.name}
-                            ${size.stock > 0 ? `<span class="stock-count">${size.stock} left</span>` : ''}
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-    }
-    
-    // ... rest of your existing product card HTML ...
-    // Keep your existing HTML but update the favorite button:
-    
-    const favoriteIcon = isFavorite ? 'fas fa-heart active' : 'fas fa-heart';
-    
-    card.innerHTML = `
-        <!-- Product Badge -->
-        ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
-        
-        <!-- Product Image Gallery -->
-        <div class="product-image-gallery">
-            <img src="${product.images[0]}" alt="${product.name}" class="product-main-image">
-            
-            <!-- Image Thumbnails -->
-            <div class="product-thumbnails">
-                ${product.images.map((img, index) => `
-                    <div class="product-thumbnail ${index === 0 ? 'active' : ''}" data-image-index="${index}">
-                        <img src="${img}" alt="Thumbnail ${index + 1}">
-                    </div>
-                `).join('')}
-            </div>
-            
-            <!-- Product Actions (Heart, etc.) -->
-            <div class="product-actions">
-                <button class="product-favorite ${isFavorite ? 'active' : ''}" aria-label="Add to favorites" data-action="toggle-favorite">
-                    <i class="${favoriteIcon}" style="${isFavorite ? 'color: var(--color-secondary);' : ''}"></i>
-                </button>
-            </div>
-        </div>
-        
-        <!-- ... rest of your existing product card HTML ... -->
-        <!-- Make sure to include all your existing HTML from the createProductCard function -->
-        
-        <!-- Product Actions Footer - UPDATE THIS SECTION -->
-        <div class="product-actions-footer">
-            <a href="#" class="btn-small" data-action="add-to-cart">Add to Cart</a>
-            <a href="#" class="btn-small btn-secondary" data-action="view-details">View Details</a>
-        </div>
-    `;
-    
-    // Initialize product card with new handlers
-    initializeProductCard(card, product);
-    
-    return card;
-}
-
-/**
- * Update the initializeProductCard function to use new system
- */
-function initializeProductCard(card, product) {
-    // ... keep your existing initialization code ...
-    
-    // Add to cart functionality - UPDATE THIS
-    const addToCartBtn = card.querySelector('[data-action="add-to-cart"]');
-    if (addToCartBtn) {
-        addToCartBtn.addEventListener('click', async function(e) {
-            e.preventDefault();
-            
-            const quantity = parseInt(card.querySelector('.quantity-input').value);
-            const selectedSize = product.selectedSize || (product.sizes && product.sizes[0]?.name);
-            
-            // Check if size is selected
-            if (product.sizes && product.sizes.length > 0 && !selectedSize) {
-                showNotification('Please select a size first', 'warning');
-                return;
-            }
-            
-            // Use the new cart system
-            if (window.cartFavoritesSystem) {
-                await window.cartFavoritesSystem.addToCart(product, quantity, selectedSize);
-            } else {
-                // Fallback to old system
-                addToCart({
-                    ...product,
-                    quantity: quantity,
-                    selectedSize: selectedSize
-                });
-            }
-        });
-    }
-    
-    // Favorite button functionality - UPDATE THIS
-    const favoriteBtn = card.querySelector('[data-action="toggle-favorite"]');
-    if (favoriteBtn) {
-        favoriteBtn.addEventListener('click', async function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            if (window.cartFavoritesSystem) {
-                const isNowFavorite = await window.cartFavoritesSystem.toggleFavorite(product);
-                
-                if (isNowFavorite) {
-                    this.classList.add('active');
-                    const icon = this.querySelector('i');
-                    icon.classList.add('active');
-                    icon.style.color = 'var(--color-secondary)';
-                    showNotification(`Added ${product.name} to favorites`, 'success');
-                } else {
-                    this.classList.remove('active');
-                    const icon = this.querySelector('i');
-                    icon.classList.remove('active');
-                    icon.style.color = '';
-                    showNotification(`Removed ${product.name} from favorites`, 'info');
-                }
-            } else {
-                // Fallback to old system
-                const isFavorite = this.classList.toggle('active');
-                const icon = this.querySelector('i');
-                
-                if (isFavorite) {
-                    icon.style.color = 'var(--color-secondary)';
-                    addToFavorites(product);
-                    showFavoriteNotification(`Added ${product.name} to favorites`);
-                } else {
-                    icon.style.color = '';
-                    removeFromFavorites(product.id);
-                    showFavoriteNotification(`Removed ${product.name} from favorites`);
-                }
-            }
-        });
-    }
-    
-    // ... rest of your existing initialization code ...
-}
-
 
 /**
  * Mock data for educational articles
@@ -997,6 +849,11 @@ function createProductCard(product) {
     card.dataset.category = product.category;
     card.dataset.price = product.price < 50 ? 'low' : (product.price < 150 ? 'medium' : 'high');
     
+    // Check if product is in favorites
+    const isFavorite = window.cartFavoritesSystem 
+        ? window.cartFavoritesSystem.isProductFavorite(product.id) 
+        : false;
+    
     // Generate unique ID for tooltip
     const tooltipId = `tooltip-${product.id}`;
     
@@ -1041,27 +898,32 @@ function createProductCard(product) {
         `;
     }
     
+    const favoriteIcon = isFavorite ? 'fas fa-heart active' : 'fas fa-heart';
+    const favoriteBtnClass = isFavorite ? 'product-favorite active' : 'product-favorite';
+    
     card.innerHTML = `
         <!-- Product Badge -->
         ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
         
         <!-- Product Image Gallery -->
         <div class="product-image-gallery">
-            <img src="${product.images[0]}" alt="${product.name}" class="product-main-image">
+            <img src="${product.images[0]}" alt="${product.name}" class="product-main-image" onerror="this.src='https://via.placeholder.com/400x400?text=Product+Image'">
             
             <!-- Image Thumbnails -->
-            <div class="product-thumbnails">
-                ${product.images.map((img, index) => `
-                    <div class="product-thumbnail ${index === 0 ? 'active' : ''}" data-image-index="${index}">
-                        <img src="${img}" alt="Thumbnail ${index + 1}">
-                    </div>
-                `).join('')}
-            </div>
+            ${product.images.length > 1 ? `
+                <div class="product-thumbnails">
+                    ${product.images.map((img, index) => `
+                        <div class="product-thumbnail ${index === 0 ? 'active' : ''}" data-image-index="${index}">
+                            <img src="${img}" alt="Thumbnail ${index + 1}" onerror="this.src='https://via.placeholder.com/100x100?text=Thumbnail'">
+                        </div>
+                    `).join('')}
+                </div>
+            ` : ''}
             
             <!-- Product Actions (Heart, etc.) -->
             <div class="product-actions">
-                <button class="product-favorite" aria-label="Add to favorites" data-action="toggle-favorite">
-                    <i class="fas fa-heart"></i>
+                <button class="${favoriteBtnClass}" aria-label="Add to favorites" data-action="toggle-favorite">
+                    <i class="${favoriteIcon}" style="${isFavorite ? 'color: var(--color-secondary);' : ''}"></i>
                 </button>
             </div>
         </div>
@@ -1144,7 +1006,9 @@ function initializeProductCard(card, product) {
             const index = parseInt(this.dataset.imageIndex);
             
             // Update main image
-            mainImage.src = productImages[index];
+            if (mainImage && productImages[index]) {
+                mainImage.src = productImages[index];
+            }
             
             // Update active thumbnail
             thumbnails.forEach(t => t.classList.remove('active'));
@@ -1154,34 +1018,39 @@ function initializeProductCard(card, product) {
         // Add hover preview
         thumb.addEventListener('mouseenter', function() {
             const index = parseInt(this.dataset.imageIndex);
-            mainImage.style.opacity = '0.7';
-            setTimeout(() => {
-                mainImage.src = productImages[index];
-                mainImage.style.opacity = '1';
-            }, 150);
+            if (mainImage && productImages[index]) {
+                mainImage.style.opacity = '0.7';
+                setTimeout(() => {
+                    mainImage.src = productImages[index];
+                    mainImage.style.opacity = '1';
+                }, 150);
+            }
         });
     });
     
-    // Favorite button functionality
-    const favoriteBtn = card.querySelector('[data-action="toggle-favorite"]');
-    if (favoriteBtn) {
-        favoriteBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            const isFavorite = this.classList.toggle('active');
-            const icon = this.querySelector('i');
-            
-            if (isFavorite) {
-                icon.classList.remove('fa-heart');
-                icon.classList.add('fas', 'fa-heart', 'active');
-                addToFavorites(product);
-                showFavoriteNotification(`Added ${product.name} to favorites`);
-            } else {
-                icon.classList.remove('active');
-                removeFromFavorites(product.id);
-                showFavoriteNotification(`Removed ${product.name} from favorites`);
-            }
+    // Tooltip functionality
+    const tooltipIcon = card.querySelector('.product-info-icon');
+    const tooltip = card.querySelector('.product-tooltip');
+    
+    if (tooltipIcon && tooltip) {
+        tooltipIcon.addEventListener('mouseenter', function() {
+            tooltip.style.opacity = '1';
+            tooltip.style.visibility = 'visible';
+        });
+        
+        tooltipIcon.addEventListener('mouseleave', function() {
+            tooltip.style.opacity = '0';
+            tooltip.style.visibility = 'hidden';
+        });
+        
+        tooltip.addEventListener('mouseenter', function() {
+            this.style.opacity = '1';
+            this.style.visibility = 'visible';
+        });
+        
+        tooltip.addEventListener('mouseleave', function() {
+            this.style.opacity = '0';
+            this.style.visibility = 'hidden';
         });
     }
     
@@ -1201,7 +1070,9 @@ function initializeProductCard(card, product) {
             
             // Update max quantity based on stock
             const quantityInput = card.querySelector('.quantity-input');
-            quantityInput.max = Math.min(10, product.selectedStock);
+            if (quantityInput && product.selectedStock) {
+                quantityInput.max = Math.min(10, product.selectedStock);
+            }
         });
     });
     
@@ -1246,40 +1117,6 @@ function initializeProductCard(card, product) {
         updateQuantityButtons(quantityInput);
     }
     
-    // Add to cart functionality
-    const addToCartBtn = card.querySelector('[data-action="add-to-cart"]');
-    if (addToCartBtn) {
-        addToCartBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            const quantity = parseInt(card.querySelector('.quantity-input').value);
-            const selectedSize = product.selectedSize || (product.sizes && product.sizes[0]?.name);
-            
-            // Check if size is selected
-            if (product.sizes && product.sizes.length > 0 && !selectedSize) {
-                showNotification('Please select a size first', 'warning');
-                return;
-            }
-            
-            // Add to cart with selected options
-            addToCart({
-                ...product,
-                quantity: quantity,
-                selectedSize: selectedSize
-            });
-        });
-    }
-    
-    // View details functionality
-    const viewDetailsBtn = card.querySelector('[data-action="view-details"]');
-    if (viewDetailsBtn) {
-        viewDetailsBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            // In Phase 2: Navigate to product detail page
-            showNotification('Product detail page coming soon!', 'info');
-        });
-    }
-    
     // Comment functionality
     setupCommentFunctionality(card, product);
     
@@ -1288,8 +1125,104 @@ function initializeProductCard(card, product) {
     if (viewReviewsBtn) {
         viewReviewsBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            // In Phase 2: Show all reviews modal
             showNotification('Reviews page coming soon!', 'info');
+        });
+    }
+    
+    // Add event listeners for the card
+    initProductCardEventListeners(card, product);
+}
+
+/**
+ * Initialize product card event listeners
+ */
+function initProductCardEventListeners(card, product = null) {
+    if (!product) {
+        // Try to get product from card data
+        const productId = parseInt(card.dataset.id);
+        if (productId) {
+            product = mockProducts.find(p => p.id === productId);
+        }
+    }
+    
+    if (!product) return;
+    
+    // Add to cart functionality
+    const addToCartBtn = card.querySelector('[data-action="add-to-cart"]');
+    if (addToCartBtn) {
+        addToCartBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
+            
+            const quantity = parseInt(card.querySelector('.quantity-input')?.value || '1');
+            const selectedSize = product.selectedSize || (product.sizes && product.sizes.find(s => s.default)?.name);
+            
+            // Check if size is selected
+            if (product.sizes && product.sizes.length > 0 && !selectedSize) {
+                showNotification('Please select a size first', 'warning');
+                return;
+            }
+            
+            // Use the cart system
+            if (window.cartFavoritesSystem) {
+                await window.cartFavoritesSystem.addToCart(product, quantity, selectedSize);
+            } else {
+                // Fallback to old system
+                addToCartOld({
+                    ...product,
+                    quantity: quantity,
+                    selectedSize: selectedSize
+                });
+            }
+        });
+    }
+    
+    // Favorite button functionality
+    const favoriteBtn = card.querySelector('[data-action="toggle-favorite"]');
+    if (favoriteBtn) {
+        favoriteBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (window.cartFavoritesSystem) {
+                const isNowFavorite = await window.cartFavoritesSystem.toggleFavorite(product);
+                
+                if (isNowFavorite) {
+                    this.classList.add('active');
+                    const icon = this.querySelector('i');
+                    icon.classList.add('active');
+                    icon.style.color = 'var(--color-secondary)';
+                    showNotification(`Added ${product.name} to favorites`, 'success');
+                } else {
+                    this.classList.remove('active');
+                    const icon = this.querySelector('i');
+                    icon.classList.remove('active');
+                    icon.style.color = '';
+                    showNotification(`Removed ${product.name} from favorites`, 'info');
+                }
+            } else {
+                // Fallback to old system
+                const isFavorite = this.classList.toggle('active');
+                const icon = this.querySelector('i');
+                
+                if (isFavorite) {
+                    icon.style.color = 'var(--color-secondary)';
+                    addToFavoritesOld(product);
+                    showNotification(`Added ${product.name} to favorites`, 'success');
+                } else {
+                    icon.style.color = '';
+                    removeFromFavoritesOld(product.id);
+                    showNotification(`Removed ${product.name} from favorites`, 'info');
+                }
+            }
+        });
+    }
+    
+    // View details functionality
+    const viewDetailsBtn = card.querySelector('[data-action="view-details"]');
+    if (viewDetailsBtn) {
+        viewDetailsBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            showNotification('Product detail page coming soon!', 'info');
         });
     }
 }
@@ -1362,7 +1295,6 @@ function setupCommentFunctionality(card, product) {
                 
                 // Simulate API call
                 setTimeout(() => {
-                    // In Phase 2, this would save to backend
                     showNotification('Thank you for your review!', 'success');
                     commentTextarea.value = '';
                     
@@ -1385,7 +1317,6 @@ function setupCommentFunctionality(card, product) {
             showLoginLink.addEventListener('click', function(e) {
                 e.preventDefault();
                 showNotification('Login feature coming in Phase 2!', 'info');
-                // In Phase 2: Show login modal
             });
         }
     }
@@ -1421,10 +1352,10 @@ function updateProductReviews(card, product) {
 }
 
 /**
- * Add product to favorites
+ * Add product to favorites (old system - fallback)
  * @param {Object} product - Product to add to favorites
  */
-function addToFavorites(product) {
+function addToFavoritesOld(product) {
     let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
     
     // Check if product is already in favorites
@@ -1442,21 +1373,13 @@ function addToFavorites(product) {
 }
 
 /**
- * Remove product from favorites
+ * Remove product from favorites (old system - fallback)
  * @param {number} productId - Product ID to remove
  */
-function removeFromFavorites(productId) {
+function removeFromFavoritesOld(productId) {
     let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
     favorites = favorites.filter(item => item.id !== productId);
     localStorage.setItem('favorites', JSON.stringify(favorites));
-}
-
-/**
- * Show favorite notification
- * @param {string} message - Notification message
- */
-function showFavoriteNotification(message) {
-    showNotification(message, 'success');
 }
 
 /**
@@ -1696,7 +1619,7 @@ function handleContactFormSubmit(e) {
         return;
     }
     
-    // Email validation - fixed regex (escaped dot)
+    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
         showFormMessage('Please enter a valid email address.', 'error');
@@ -1723,33 +1646,6 @@ function handleContactFormSubmit(e) {
         // Restore button
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
-        
-        // In production: Send data to Formspree or backend
-        // Example with Formspree:
-        // const formData = new FormData(form);
-        // fetch('https://formspree.io/f/your-form-id', {
-        //     method: 'POST',
-        //     body: formData,
-        //     headers: {
-        //         'Accept': 'application/json'
-        //     }
-        // })
-        // .then(response => {
-        //     if (response.ok) {
-        //         showFormMessage('Thank you for your message! We will respond soon.', 'success');
-        //         form.reset();
-        //     } else {
-        //         showFormMessage('There was an error sending your message. Please try again.', 'error');
-        //     }
-        // })
-        // .catch(error => {
-        //     showFormMessage('There was an error sending your message. Please try again.', 'error');
-        // })
-        // .finally(() => {
-        //     submitBtn.innerHTML = originalText;
-        //     submitBtn.disabled = false;
-        // });
-        
     }, 1500);
 }
 
@@ -1846,8 +1742,8 @@ function filterProducts() {
     productCards.forEach(card => {
         const productCategory = card.dataset.category;
         const productPrice = card.dataset.price;
-        const productName = card.querySelector('.product-title').textContent.toLowerCase();
-        const productDescription = card.querySelector('.product-description').textContent.toLowerCase();
+        const productName = card.querySelector('.product-title')?.textContent.toLowerCase() || '';
+        const productDescription = card.querySelector('.product-description')?.textContent.toLowerCase() || '';
         
         // Check category filter
         const categoryMatch = category === 'all' || productCategory === category;
@@ -1894,10 +1790,10 @@ function clearFilters() {
 }
 
 /**
- * Add product to cart
+ * Add product to cart (old system - fallback)
  * @param {Object} product - Product to add to cart
  */
-function addToCart(product) {
+function addToCartOld(product) {
     // Get current cart from localStorage
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     
@@ -1905,13 +1801,14 @@ function addToCart(product) {
     const existingItem = cart.find(item => item.id === product.id);
     
     if (existingItem) {
-        existingItem.quantity += 1;
+        existingItem.quantity += product.quantity || 1;
     } else {
         cart.push({
             id: product.id,
             name: product.name,
             price: product.price,
-            quantity: 1
+            quantity: product.quantity || 1,
+            selectedSize: product.selectedSize
         });
     }
     
@@ -1922,78 +1819,32 @@ function addToCart(product) {
     updateCartCount();
     
     // Show confirmation message
-    showCartNotification(`Added ${product.name} to cart`);
+    showNotification(`Added ${product.name} to cart`, 'success');
 }
 
 /**
  * Update cart count display in header
  */
 function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-    
-    const cartCountElements = document.querySelectorAll('.cart-count');
-    cartCountElements.forEach(element => {
-        element.textContent = totalItems;
-    });
-}
-
-/**
- * Show cart notification
- * @param {string} message - Notification message
- */
-function showCartNotification(message) {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = 'cart-notification';
-    notification.innerHTML = `
-        <i class="fas fa-check-circle"></i>
-        <span>${message}</span>
-    `;
-    
-    // Style the notification
-    notification.style.cssText = `
-        position: fixed;
-        top: 100px;
-        right: 20px;
-        background-color: var(--color-primary);
-        color: white;
-        padding: 12px 20px;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        z-index: 10000;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s;
-    `;
-    
-    // Add to document
-    document.body.appendChild(notification);
-    
-    // Add CSS for animations if not already added
-    if (!document.querySelector('#cart-notification-styles')) {
-        const style = document.createElement('style');
-        style.id = 'cart-notification-styles';
-        style.textContent = `
-            @keyframes slideIn {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
-            @keyframes fadeOut {
-                from { opacity: 1; }
-                to { opacity: 0; }
-            }
-        `;
-        document.head.appendChild(style);
+    // Try to use the cart system first
+    if (window.cartFavoritesSystem) {
+        const cartCount = window.cartFavoritesSystem.getCartItemCount();
+        const cartCountElements = document.querySelectorAll('.cart-count');
+        cartCountElements.forEach(element => {
+            element.textContent = cartCount;
+            element.style.display = cartCount > 0 ? 'inline-block' : 'none';
+        });
+    } else {
+        // Fallback to old system
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const totalItems = cart.reduce((total, item) => total + (item.quantity || 1), 0);
+        
+        const cartCountElements = document.querySelectorAll('.cart-count');
+        cartCountElements.forEach(element => {
+            element.textContent = totalItems;
+            element.style.display = totalItems > 0 ? 'inline-block' : 'none';
+        });
     }
-    
-    // Remove notification after animation
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
-        }
-    }, 3000);
 }
 
 // ============================================
@@ -2131,7 +1982,6 @@ function getUrlParameter(name) {
     return urlParams.get(name);
 }
 
-
 /**
  * Simulate login for demo purposes
  * In Phase 2, this would connect to actual authentication
@@ -2147,75 +1997,34 @@ function simulateLogin() {
     }
 }
 
-// Add to initialization for demo purposes
-// document.addEventListener('DOMContentLoaded', function() {
-//     // For demo: Uncomment to simulate logged-in user
-//     // simulateLogin();
-// });
-
 // ============================================
-// ADDITIONAL FUNCTIONALITY FOR FUTURE INTEGRATION
+// INITIALIZE CART SYSTEM INTEGRATION
 // ============================================
 
 /**
- * This section would contain code for backend integration
- * when the website is connected to a real backend API
+ * Ensure cart system is available and update UI
  */
+function checkCartSystem() {
+    if (window.cartFavoritesSystem) {
+        // Update cart count
+        updateCartCount();
+        
+        // Update favorite buttons
+        updateAllFavoriteButtons();
+    } else {
+        // Try to initialize after a delay
+        setTimeout(checkCartSystem, 1000);
+    }
+}
 
-/**
- * Example: Fetch products from backend API
- * This would replace the mockProducts data
- */
-// async function fetchProductsFromAPI() {
-//     try {
-//         const response = await fetch('/api/products');
-//         if (!response.ok) throw new Error('Network response was not ok');
-//         const products = await response.json();
-//         return products;
-//     } catch (error) {
-//         console.error('Error fetching products:', error);
-//         // Fallback to mock data
-//         return mockProducts;
-//     }
-// }
+// Start checking for cart system
+setTimeout(checkCartSystem, 1000);
 
-/**
- * Example: Submit contact form to backend
- */
-// async function submitContactFormToAPI(formData) {
-//     try {
-//         const response = await fetch('/api/contact', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify(formData)
-//         });
-//         
-//         if (!response.ok) throw new Error('Network response was not ok');
-//         
-//         return await response.json();
-//     } catch (error) {
-//         console.error('Error submitting form:', error);
-//         throw error;
-//     }
-// }
+// ============================================
+// EXPOSE FUNCTIONS FOR GLOBAL USE
+// ============================================
 
-/**
- * Initialize the website with backend data
- * Uncomment and adapt when backend is available
- */
-// async function initializeWithBackend() {
-//     // Load products from backend
-//     const products = await fetchProductsFromAPI();
-//     // Update UI with real products
-//     
-//     // Load articles from backend
-//     // const articles = await fetchArticlesFromAPI();
-//     
-//     // Load partners from backend
-//     // const partners = await fetchPartnersFromAPI();
-// }
-
-// Initialize with backend when available
-// initializeWithBackend();
+// Make sure functions are available globally
+window.updateCartCount = updateCartCount;
+window.showNotification = showNotification;
+window.simulateLogin = simulateLogin;
