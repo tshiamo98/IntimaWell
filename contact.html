@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | IntimaWell | Get in Touch</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚧</text></svg>">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <span class="logo-icon">⚧</span>
+                    <span class="logo-text">IntimaWell</span>
+                </a>
+ 
+                     <nav class="main-nav">
+                <ul class="nav-list">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="education.html">Education</a></li>
+                    <li><a href="partners.html">Partners</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html" class="active">Contact</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-actions">
+                <button class="icon-btn" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="shop.html" class="icon-btn" aria-label="Shopping cart">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count">0</span>
+                </a>
+
+        <!-- Add this inside header-actions div, after cart icon -->
+        <div class="theme-dropdown">
+            <button class="theme-toggle" aria-label="Change theme" id="themeToggle">
+                <i class="fas fa-palette"></i>
+            </button>
+            <div class="theme-options" id="themeOptions">
+                <div class="theme-option" data-theme="girly">
+                    <div class="theme-preview" style="background: linear-gradient(45deg, #ff6b9d, #ba68c8);"></div>
+                    <span>Girly</span>
+                </div>
+                <div class="theme-option" data-theme="lgbt">
+                    <div class="theme-preview" style="background: linear-gradient(45deg, #e40303, #ff8c00, #ffed00, #008026, #004dff, #750787);"></div>
+                    <span>LGBT+Q</span>
+                </div>
+                <div class="theme-option" data-theme="manly">
+                    <div class="theme-preview" style="background: linear-gradient(45deg, #2c3e50, #3498db);"></div>
+                    <span>Manly</span>
+                </div>
+                <div class="theme-option" data-theme="luxurious">
+                    <div class="theme-preview" style="background: linear-gradient(45deg, #8a4fff, #ff6b8b);"></div>
+                    <span>Luxurious</span>
+                </div>
+            </div>
+        </div>
+
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle mobile menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-header">
+            <span class="logo">IntimaWell</span>
+            <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close mobile menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="mobile-nav-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="education.html">Education</a></li>
+            <li><a href="partners.html">Partners</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html" class="active">Contact</a></li>
+        </ul>
+        <div class="mobile-nav-footer">
+            <p>Confidential & Secure</p>
+            <div class="social-icons">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main>
+    <!-- Contact Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">Contact Us</h1>
+            <p class="page-subtitle">We're here to help with questions about products, education, partnerships, or [INTIMATE_WELLNESS].</p>
+        </div>
+    </section>
+
+    <!-- Contact Intro -->
+    <section class="section contact-intro">
+        <div class="container">
+            <div class="intro-content">
+                <h2 class="section-title">Get in Touch</h2>
+                <p>At IntimaWell, we prioritize your privacy and comfort. All communications are confidential, and our team is trained to provide respectful, knowledgeable assistance with any questions about [ADULT_PRODUCT], [EDUCATIONAL_CONTENT], or connecting with [PARTNER_SPECIALIST].</p>
+                <p>Please allow 1-2 business days for a response. For urgent matters, please call our support line during business hours.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Content -->
+    <section class="section contact-content">
+        <div class="container">
+            <div class="contact-grid">
+                <!-- Contact Form -->
+                <div class="contact-form-container">
+                    <h2 class="form-title">Send Us a Message</h2>
+                    <p class="form-subtitle">Fill out the form below and we'll respond as soon as possible.</p>
+                    
+                    <form id="contactForm" class="contact-form">
+                        <div class="form-group">
+                            <label for="name">Full Name *</label>
+                            <input type="text" id="name" name="name" required placeholder="Your name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Subject *</label>
+                            <select id="subject" name="subject" required>
+                                <option value="" disabled selected>Select a topic</option>
+                                <option value="product">Product Questions</option>
+                                <option value="order">Order Support</option>
+                                <option value="education">Education Resources</option>
+                                <option value="partnership">Partnership Inquiry</option>
+                                <option value="general">General Question</option>
+                                <option value="professional">Professional Consultation</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" required rows="6" placeholder="Please include any relevant details about your inquiry..."></textarea>
+                        </div>
+                        
+                        <div class="form-consent">
+                            <input type="checkbox" id="consent" name="consent" required>
+                            <label for="consent">I understand that this form collects my name, email, and message so that IntimaWell can respond to my inquiry. I am 18 years or older.*</label>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary form-submit">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                        
+                        <p class="form-note">* Required fields. All information is kept confidential and secure.</p>
+                    </form>
+                    
+                    <div id="formMessage" class="form-message"></div>
+                </div>
+                
+                <!-- Contact Information -->
+                <div class="contact-info-container">
+                    <h2 class="info-title">Contact Information</h2>
+                    <p class="info-subtitle">Here's how else you can reach us:</p>
+                    
+                    <div class="contact-info">
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="info-content">
+                                <h3>Email</h3>
+                                <p>info@intimawell.com</p>
+                                <p class="info-note">General inquiries</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="info-content">
+                                <h3>Phone</h3>
+                                <p>+27 21 123 4567</p>
+                                <p class="info-note">Mon-Fri, 9am-5pm SAST</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="info-content">
+                                <h3>Location</h3>
+                                <p>Cape Town, South Africa</p>
+                                <p class="info-note">By appointment only</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="info-content">
+                                <h3>Response Time</h3>
+                                <p>1-2 business days</p>
+                                <p class="info-note">For email inquiries</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-notes">
+                        <h3>Important Notes:</h3>
+                        <ul>
+                            <li>All communications are confidential and secure.</li>
+                            <li>We do not provide medical advice. For personal health concerns, please consult a healthcare professional.</li>
+                            <li>For partnership inquiries, please select "Partnership Inquiry" in the subject field.</li>
+                            <li>If you're experiencing a crisis, please contact appropriate support services listed on our <a href="education.html">Education page</a>.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="social-contact">
+                        <h3>Connect With Us</h3>
+                        <div class="social-links">
+                            <a href="#" class="social-link" aria-label="Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="social-link" aria-label="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="social-link" aria-label="Twitter">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="social-link" aria-label="LinkedIn">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Preview -->
+    <section class="section faq-preview dark-bg">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <p class="section-subtitle">Quick answers to common questions</p>
+            </div>
+            
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3 class="faq-question">Are your products discreetly packaged?</h3>
+                    <p class="faq-answer">Yes, all orders are shipped in plain packaging with no indication of the contents. The sender name on the package is "IW Wellness."</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3 class="faq-question">Do you ship internationally?</h3>
+                    <p class="faq-answer">We currently ship within South Africa with plans to expand internationally. Please contact us for specific shipping inquiries.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3 class="faq-question">How do I know which [ADULT_PRODUCT] is right for me?</h3>
+                    <p class="faq-answer">We provide detailed product information and guides on our Education page. You can also contact us for personalized recommendations.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3 class="faq-question">Can I speak with a [PARTNER_SPECIALIST] directly?</h3>
+                    <p class="faq-answer">Yes, we can connect you with appropriate professionals from our network. Please select "Professional Consultation" in the contact form.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3 class="faq-question">Is my personal information secure?</h3>
+                    <p class="faq-answer">Absolutely. We use industry-standard encryption and never share your information with third parties without consent.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3 class="faq-question">Do you offer educational workshops or events?</h3>
+                    <p class="faq-answer">Yes, we periodically host workshops and webinars. Sign up for our newsletter to be notified about upcoming events.</p>
+                </div>
+            </div>
+            
+            <div class="section-footer">
+                <a href="#" class="btn-secondary">View Full FAQ</a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer - Same as index.html -->
+<footer class="main-footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col footer-about">
+                <a href="index.html" class="logo">
+                    <span class="logo-icon">⚧</span>
+                    <span class="logo-text">IntimaWell</span>
+                </a>
+                <p class="footer-description">A premium destination for [INTIMATE_WELLNESS] products, inclusive education, and professional guidance for all sexual orientations.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-col">
+                <h3 class="footer-title">Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="education.html">Education</a></li>
+                    <li><a href="partners.html">Partners</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3 class="footer-title">Information</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Shipping Policy</a></li>
+                    <li><a href="#">Returns & Exchanges</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Age Verification</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3 class="footer-title">Contact Us</h3>
+                <ul class="footer-contact">
+                    <li><i class="fas fa-envelope"></i> info@intimawell.com</li>
+                    <li><i class="fas fa-phone"></i> +27 21 123 4567</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Cape Town, South Africa</li>
+                </ul>
+                <p class="footer-note">All communications are confidential and secure.</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p class="copyright">© 2023 IntimaWell. All rights reserved. For adults 18+ only.</p>
+            <p class="disclaimer">This website contains educational content about sexual wellness and [ADULT_PRODUCT]. Please consult a healthcare professional for personal medical advice.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="script.js"></script>
+       
+</body>
+
+</html>

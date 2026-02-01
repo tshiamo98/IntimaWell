@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Education | IntimaWell | Sexual Health & Wellness Resources</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚧</text></svg>">
+
+    <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <span class="logo-icon">⚧</span>
+                    <span class="logo-text">IntimaWell</span>
+                </a>
+
+                <nav class="main-nav">
+                    <ul class="nav-list">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="education.html" class="active">Education</a></li>
+                        <li><a href="partners.html">Partners</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="header-actions">
+                    <button class="icon-btn" aria-label="Search">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <a href="shop.html" class="icon-btn" aria-label="Shopping cart">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+
+
+    <!-- Add this inside header-actions div, after cart icon -->
+    <div class="theme-dropdown">
+        <button class="theme-toggle" aria-label="Change theme" id="themeToggle">
+            <i class="fas fa-palette"></i>
+        </button>
+        <div class="theme-options" id="themeOptions">
+            <div class="theme-option" data-theme="girly">
+                <div class="theme-preview" style="background: linear-gradient(45deg, #ff6b9d, #ba68c8);"></div>
+                <span>Girly</span>
+            </div>
+            <div class="theme-option" data-theme="lgbt">
+                <div class="theme-preview" style="background: linear-gradient(45deg, #e40303, #ff8c00, #ffed00, #008026, #004dff, #750787);"></div>
+                <span>LGBT+Q</span>
+            </div>
+            <div class="theme-option" data-theme="manly">
+                <div class="theme-preview" style="background: linear-gradient(45deg, #2c3e50, #3498db);"></div>
+                <span>Manly</span>
+            </div>
+            <div class="theme-option" data-theme="luxurious">
+                <div class="theme-preview" style="background: linear-gradient(45deg, #8a4fff, #ff6b8b);"></div>
+                <span>Luxurious</span>
+            </div>
+        </div>
+    </div>
+
+                    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle mobile menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation Menu -->
+        <div class="mobile-nav" id="mobileNav">
+            <div class="mobile-nav-header">
+                <span class="logo">IntimaWell</span>
+                <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close mobile menu">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <ul class="mobile-nav-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="education.html" class="active">Education</a></li>
+                <li><a href="partners.html">Partners</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="mobile-nav-footer">
+                <p>Confidential & Secure</p>
+                <div class="social-icons">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Education Header -->
+        <section class="page-header">
+            <div class="container">
+                <h1 class="page-title">Sexual Health & Wellness Education</h1>
+                <p class="page-subtitle">Evidence-based resources on sexual wellness, orientation awareness, and safe practices for all sexual orientations.</p>
+            </div>
+        </section>
+
+        <!-- Education Stats -->
+        <section class="section education-stats">
+            <div class="container">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalArticles">24</div>
+                    <div class="stat-label">Learning Materials</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalCategories">6</div>
+                    <div class="stat-label">Categories</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalFavorites">0</div>
+                    <div class="stat-label">Favorited by You</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="completionRate">0%</div>
+                    <div class="stat-label">Your Completion</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Categories -->
+        <section class="section education-categories">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Explore Topics</h2>
+                    <p class="section-subtitle">Browse our educational content by category</p>
+                </div>
+                
+                <div class="education-filter">
+                    <div class="filter-tabs" id="categoryTabs">
+                        <button class="filter-tab active" data-category="all">All Topics</button>
+                        <button class="filter-tab" data-category="sexual-health">Sexual Health</button>
+                        <button class="filter-tab" data-category="relationships">Relationships & Communication</button>
+                        <button class="filter-tab" data-category="orientation">Orientation Awareness</button>
+                        <button class="filter-tab" data-category="safety">Safety & Consent</button>
+                        <button class="filter-tab" data-category="products">Product Education</button>
+                        <button class="filter-tab" data-category="wellness">Intimate Wellness</button>
+                    </div>
+                </div>
+
+                <div class="active-filter-display" id="activeFilterDisplay" style="display: none;">
+                    <div class="active-filter">
+                        <span>Showing: <strong id="activeCategory">All Topics</strong></span>
+                        <button id="clearFilter" aria-label="Clear filter">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="no-results" id="noResults">
+                    <i class="fas fa-book-open"></i>
+                    <h3>No Materials Found</h3>
+                    <p>We couldn't find any learning materials in this category. Try another category or suggest a topic!</p>
+                    <a href="#suggest-material" class="btn-primary" style="margin-top: var(--space-md);">Suggest a Topic</a>
+                </div>
+                
+                <div class="categories-grid">
+                    <a href="#sexual-health" class="category-card" data-category="sexual-health">
+                        <div class="category-icon">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <h3 class="category-title">Sexual Health</h3>
+                        <p class="category-description">Information on STI prevention, regular check-ups, and maintaining sexual wellbeing.</p>
+                    </a>
+                    
+                    <a href="#relationships" class="category-card" data-category="relationships">
+                        <div class="category-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="category-title">Relationships & Communication</h3>
+                        <p class="category-description">Building healthy relationships, consent, and effective communication.</p>
+                    </a>
+                    
+                    <a href="#orientation" class="category-card" data-category="orientation">
+                        <div class="category-icon">
+                            <i class="fas fa-rainbow"></i>
+                        </div>
+                        <h3 class="category-title">Orientation Awareness</h3>
+                        <p class="category-description">Resources for all sexual orientations and gender identities.</p>
+                    </a>
+                    
+                    <a href="#safety" class="category-card" data-category="safety">
+                        <div class="category-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="category-title">Safety & Consent</h3>
+                        <p class="category-description">Understanding boundaries, safe practices, and enthusiastic consent.</p>
+                    </a>
+                    
+                    <a href="#products" class="category-card" data-category="products">
+                        <div class="category-icon">
+                            <i class="fas fa-cube"></i>
+                        </div>
+                        <h3 class="category-title">Product Education</h3>
+                        <p class="category-description">How to choose and use adult products safely and effectively.</p>
+                    </a>
+                    
+                    <a href="#wellness" class="category-card" data-category="wellness">
+                        <div class="category-icon">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <h3 class="category-title">Intimate Wellness</h3>
+                        <p class="category-description">Holistic approaches to sexual wellbeing and pleasure.</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Articles -->
+        <section class="section featured-articles dark-bg">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Learning Materials</h2>
+                    <p class="section-subtitle">Browse our collection of educational articles, guides, and resources</p>
+                </div>
+                
+                <div class="articles-grid" id="articlesGrid">
+                    <!-- Articles will be loaded dynamically by JavaScript -->
+                    <!-- Loading placeholder -->
+                    <div class="article-card loading">
+                        <div class="article-image">
+                            <div class="placeholder-image"></div>
+                        </div>
+                        <div class="article-content">
+                            <span class="article-category">Loading...</span>
+                            <h3 class="article-title">Article Title</h3>
+                            <p class="article-excerpt">Article description is loading...</p>
+                            <div class="article-meta">
+                                <span class="article-author">By Author</span>
+                                <span class="article-date">Date</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section-footer">
+                    <p class="article-count-info" id="articleCountInfo">Showing 24 of 24 articles</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Learning Path -->
+        <section class="section learning-path">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Your Learning Journey</h2>
+                    <p class="section-subtitle">Follow our recommended path for comprehensive sexual wellness education</p>
+                </div>
+                
+                <div class="path-steps">
+                    <div class="path-step">
+                        <div class="path-step-number">1</div>
+                        <h3 class="path-step-title">Foundation</h3>
+                        <p class="path-step-description">Start with basic anatomy, sexual health, and safety fundamentals.</p>
+                        <a href="#" class="btn-small" data-category="sexual-health" style="margin-top: var(--space-md);">Explore Foundation</a>
+                    </div>
+                    
+                    <div class="path-step">
+                        <div class="path-step-number">2</div>
+                        <h3 class="path-step-title">Communication</h3>
+                        <p class="path-step-description">Learn about consent, boundaries, and healthy relationship dynamics.</p>
+                        <a href="#" class="btn-small" data-category="relationships" style="margin-top: var(--space-md);">Explore Communication</a>
+                    </div>
+                    
+                    <div class="path-step">
+                        <div class="path-step-number">3</div>
+                        <h3 class="path-step-title">Exploration</h3>
+                        <p class="path-step-description">Discover different orientations, identities, and intimate practices.</p>
+                        <a href="#" class="btn-small" data-category="orientation" style="margin-top: var(--space-md);">Explore Orientation</a>
+                    </div>
+                    
+                    <div class="path-step">
+                        <div class="path-step-number">4</div>
+                        <h3 class="path-step-title">Wellness</h3>
+                        <p class="path-step-description">Focus on holistic intimate wellness and long-term sexual health.</p>
+                        <a href="#" class="btn-small" data-category="wellness" style="margin-top: var(--space-md);">Explore Wellness</a>
+                    </div>
+                </div>
+                
+                <div class="section-footer">
+                    <button class="btn-primary" id="startLearningPath">
+                        <i class="fas fa-play-circle"></i> Start Learning Path
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Suggest Material Section -->
+        <section class="section suggest-material" id="suggest-material">
+            <div class="container">
+                <div class="suggest-header">
+                    <div class="suggest-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h2 class="section-title">Suggest Learning Materials</h2>
+                    <p class="section-subtitle">Help us improve our educational content by suggesting topics you'd like to learn about</p>
+                </div>
+                
+                <form id="suggestForm" class="suggest-form">
+                    <div class="form-group">
+                        <label for="suggestTopic">Topic or Title *</label>
+                        <input type="text" id="suggestTopic" name="topic" required placeholder="What would you like to learn about?">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="suggestCategory">Category *</label>
+                        <select id="suggestCategory" name="category" required>
+                            <option value="" disabled selected>Select a category</option>
+                            <option value="sexual-health">Sexual Health</option>
+                            <option value="relationships">Relationships & Communication</option>
+                            <option value="orientation">Orientation Awareness</option>
+                            <option value="safety">Safety & Consent</option>
+                            <option value="products">Product Education</option>
+                            <option value="wellness">Intimate Wellness</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="suggestDescription">Why is this important? *</label>
+                        <textarea id="suggestDescription" name="description" required placeholder="Tell us why this topic matters to you and what you'd like to learn..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="suggestEmail">Your Email (Optional)</label>
+                        <input type="email" id="suggestEmail" name="email" placeholder="email@example.com">
+                        <p class="suggest-note">We'll only contact you if we need clarification about your suggestion</p>
+                    </div>
+                    
+                    <div class="form-consent">
+                        <input type="checkbox" id="suggestConsent" name="consent" required>
+                        <label for="suggestConsent">I understand that this suggestion helps improve educational resources for everyone. I am 18 years or older.*</label>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary form-submit">
+                        <i class="fas fa-paper-plane"></i> Submit Suggestion
+                    </button>
+                    
+                    <p class="suggest-note">* Required fields. All suggestions are reviewed by our educational team.</p>
+                </form>
+                
+                <div id="suggestMessage" class="form-message"></div>
+            </div>
+        </section>
+
+        <!-- Resources Section -->
+        <section class="section resources">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Additional Resources</h2>
+                    <p class="section-subtitle">Trusted organizations and further reading</p>
+                </div>
+                
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h3 class="resource-title">Crisis Support</h3>
+                        <p class="resource-description">If you need immediate support, these organizations can help:</p>
+                        <ul class="resource-links">
+                            <li><a href="#">National Sexual Assault Hotline</a></li>
+                            <li><a href="#">LGBTQ+ Crisis Support</a></li>
+                            <li><a href="#">Mental Health Resources</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <h3 class="resource-title">Professional Associations</h3>
+                        <p class="resource-description">Connect with certified sexual wellness professionals:</p>
+                        <ul class="resource-links">
+                            <li><a href="#">Association of Sexual Health Professionals</a></li>
+                            <li><a href="#">International Society for Sexual Medicine</a></li>
+                            <li><a href="#">World Association for Sexual Health</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <h3 class="resource-title">Further Reading</h3>
+                        <p class="resource-description">Recommended books and publications:</p>
+                        <ul class="resource-links">
+                            <li><a href="#">"The Guide to Intimate Wellness"</a></li>
+                            <li><a href="#">"Understanding Orientation Awareness"</a></li>
+                            <li><a href="#">Journal of Sexual Health Research</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col footer-about">
+                    <a href="index.html" class="logo">
+                        <span class="logo-icon">⚧</span>
+                        <span class="logo-text">IntimaWell</span>
+                    </a>
+                    <p class="footer-description">A premium destination for intimate wellness products, inclusive education, and professional guidance for all sexual orientations.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="education.html">Education</a></li>
+                        <li><a href="partners.html">Partners</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 class="footer-title">Information</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Returns & Exchanges</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Age Verification</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 class="footer-title">Contact Us</h3>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-envelope"></i> info@intimawell.com</li>
+                        <li><i class="fas fa-phone"></i> +27 21 123 4567</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Cape Town, South Africa</li>
+                    </ul>
+                    <p class="footer-note">All communications are confidential and secure.</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="copyright">© 2023 IntimaWell. All rights reserved. For adults 18+ only.</p>
+                <p class="disclaimer">This website contains educational content about sexual wellness and adult products. Please consult a healthcare professional for personal medical advice.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Education-specific JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize education page functionality
+            initEducationPage();
+        });
+
+        function initEducationPage() {
+            // Load articles
+            loadArticles();
+            
+            // Initialize category filtering
+            initCategoryFiltering();
+            
+            // Initialize suggestion form
+            initSuggestionForm();
+            
+            // Initialize learning path
+            initLearningPath();
+            
+            // Update stats
+            updateEducationStats();
+            
+            // Initialize learning path buttons
+            initLearningPathButtons();
+        }
+
+        function loadArticles() {
+            const articlesGrid = document.getElementById('articlesGrid');
+            if (!articlesGrid) return;
+            
+            // Clear loading placeholder
+            articlesGrid.innerHTML = '';
+            
+            // Load all articles initially
+            displayArticles(mockArticles);
+        }
+
+        function displayArticles(articles) {
+            const articlesGrid = document.getElementById('articlesGrid');
+            if (!articlesGrid) return;
+            
+            articlesGrid.innerHTML = '';
+            
+            if (articles.length === 0) {
+                document.getElementById('noResults').style.display = 'block';
+                return;
+            }
+            
+            document.getElementById('noResults').style.display = 'none';
+            
+            articles.forEach(article => {
+                const articleCard = createArticleCard(article);
+                articlesGrid.appendChild(articleCard);
+            });
+            
+            // Update article count display
+            const articleCountInfo = document.getElementById('articleCountInfo');
+            if (articleCountInfo) {
+                articleCountInfo.textContent = `Showing ${articles.length} of ${mockArticles.length} articles`;
+            }
+            
+            // Update stats
+            updateEducationStats();
+        }
+
+        function createArticleCard(article) {
+            const card = document.createElement('div');
+            card.className = 'article-card';
+            card.dataset.id = article.id;
+            card.dataset.category = article.category;
+            
+            // Format date for display
+            const date = new Date(article.date);
+            const formattedDate = date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            
+            // Get category display name
+            const categoryNames = {
+                'sexual-health': 'Sexual Health',
+                'relationships': 'Relationships & Communication',
+                'orientation': 'Orientation Awareness',
+                'safety': 'Safety & Consent',
+                'products': 'Product Education',
+                'wellness': 'Intimate Wellness'
+            };
+            
+            // Check if article is favorited
+            const favorites = JSON.parse(localStorage.getItem('educationFavorites')) || [];
+            const isFavorited = favorites.includes(article.id);
+            
+            // Check if article is disliked
+            const dislikes = JSON.parse(localStorage.getItem('educationDislikes')) || [];
+            const isDisliked = dislikes.includes(article.id);
+            
+            card.innerHTML = `
+                <div class="article-image">
+                    <img src="${article.image}" alt="${article.title}" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop'">
+                    <div class="article-actions">
+                        <button class="article-favorite ${isFavorited ? 'active' : ''}" aria-label="Add to favorites" data-action="toggle-favorite">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <button class="article-dislike ${isDisliked ? 'active' : ''}" aria-label="Not helpful" data-action="toggle-dislike">
+                            <i class="fas fa-thumbs-down"></i>
+                        </button>
+                    </div>
+                    ${article.featured ? '<div class="article-bookmark">Featured</div>' : ''}
+                </div>
+                <div class="article-content">
+                    <span class="article-category">${categoryNames[article.category] || article.category}</span>
+                    <h3 class="article-title">${article.title}</h3>
+                    <p class="article-excerpt">${article.excerpt}</p>
+                    
+                    <div class="article-difficulty">
+                        ${Array(5).fill(0).map((_, i) => `
+                            <div class="difficulty-dot ${i < article.difficulty ? 'active' : ''}"></div>
+                        `).join('')}
+                        <span class="difficulty-label">${article.difficulty}/5</span>
+                    </div>
+                    
+                    <div class="article-stats">
+                        <div class="article-stat">
+                            <i class="fas fa-clock"></i>
+                            <span>${article.readTime} min</span>
+                        </div>
+                        <div class="article-stat">
+                            <i class="fas fa-eye"></i>
+                            <span>${article.views} views</span>
+                        </div>
+                    </div>
+                    
+                    <div class="article-meta">
+                        <span class="article-author">By ${article.author}</span>
+                        <span class="article-date">${formattedDate}</span>
+                    </div>
+                    
+                    <div class="reading-progress">
+                        <div class="reading-progress-bar" style="width: ${article.progress || 0}%"></div>
+                    </div>
+                </div>
+            `;
+            
+            // Initialize article interactions
+            initializeArticleCard(card, article);
+            
+            return card;
+        }
+
+        function initializeArticleCard(card, article) {
+            // Favorite button
+            const favoriteBtn = card.querySelector('[data-action="toggle-favorite"]');
+            if (favoriteBtn) {
+                favoriteBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const isFavorite = this.classList.toggle('active');
+                    
+                    let favorites = JSON.parse(localStorage.getItem('educationFavorites')) || [];
+                    
+                    if (isFavorite) {
+                        // Add to favorites
+                        if (!favorites.includes(article.id)) {
+                            favorites.push(article.id);
+                            showNotification(`Added "${article.title}" to favorites`, 'success');
+                        }
+                    } else {
+                        // Remove from favorites
+                        favorites = favorites.filter(id => id !== article.id);
+                        showNotification(`Removed "${article.title}" from favorites`, 'info');
+                    }
+                    
+                    localStorage.setItem('educationFavorites', JSON.stringify(favorites));
+                    updateEducationStats();
+                });
+            }
+            
+            // Dislike button
+            const dislikeBtn = card.querySelector('[data-action="toggle-dislike"]');
+            if (dislikeBtn) {
+                dislikeBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const isDisliked = this.classList.toggle('active');
+                    
+                    // Track dislikes
+                    let dislikes = JSON.parse(localStorage.getItem('educationDislikes')) || [];
+                    
+                    if (isDisliked) {
+                        if (!dislikes.includes(article.id)) {
+                            dislikes.push(article.id);
+                            showNotification(`Feedback recorded. We'll improve our content.`, 'info');
+                        }
+                    } else {
+                        dislikes = dislikes.filter(id => id !== article.id);
+                    }
+                    
+                    localStorage.setItem('educationDislikes', JSON.stringify(dislikes));
+                });
+            }
+            
+            // Click to view article
+            card.addEventListener('click', function(e) {
+                if (!e.target.closest('.article-actions')) {
+                    // Track view
+                    article.views = (article.views || 0) + 1;
+                    
+                    // Update progress
+                    if (article.progress < 100) {
+                        article.progress = Math.min(100, article.progress + 25);
+                        const progressBar = card.querySelector('.reading-progress-bar');
+                        if (progressBar) {
+                            progressBar.style.width = `${article.progress}%`;
+                        }
+                        
+                        // Update completion rate
+                        updateEducationStats();
+                        
+                        // Show progress notification
+                        if (article.progress === 100) {
+                            showNotification(`🎉 You've completed "${article.title}"!`, 'success');
+                        } else {
+                            showNotification(`📖 Reading "${article.title}"... Progress: ${article.progress}%`, 'info');
+                        }
+                    }
+                }
+            });
+        }
+
+        function initCategoryFiltering() {
+            const categoryTabs = document.getElementById('categoryTabs');
+            const categoryCards = document.querySelectorAll('.category-card');
+            const activeFilterDisplay = document.getElementById('activeFilterDisplay');
+            const activeCategory = document.getElementById('activeCategory');
+            const clearFilter = document.getElementById('clearFilter');
+            
+            if (!categoryTabs) return;
+            
+            // Category tab click
+            categoryTabs.addEventListener('click', function(e) {
+                const tab = e.target.closest('.filter-tab');
+                if (!tab) return;
+                
+                // Update active tab
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                const category = tab.dataset.category;
+                
+                // Filter articles
+                filterArticlesByCategory(category);
+                
+                // Update active filter display
+                if (category === 'all') {
+                    activeFilterDisplay.style.display = 'none';
+                } else {
+                    activeFilterDisplay.style.display = 'block';
+                    activeCategory.textContent = tab.textContent;
+                }
+            });
+            
+            // Category card click
+            categoryCards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const category = this.dataset.category;
+                    
+                    // Update active tab
+                    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelector(`.filter-tab[data-category="${category}"]`).classList.add('active');
+                    
+                    // Filter articles
+                    filterArticlesByCategory(category);
+                    
+                    // Update active filter display
+                    activeFilterDisplay.style.display = 'block';
+                    activeCategory.textContent = this.querySelector('.category-title').textContent;
+                    
+                    // Scroll to articles
+                    document.querySelector('.featured-articles').scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+            
+            // Clear filter
+            if (clearFilter) {
+                clearFilter.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelector('.filter-tab[data-category="all"]').classList.add('active');
+                    
+                    activeFilterDisplay.style.display = 'none';
+                    filterArticlesByCategory('all');
+                });
+            }
+        }
+
+        function filterArticlesByCategory(category) {
+            if (category === 'all') {
+                displayArticles(mockArticles);
+            } else {
+                const filteredArticles = mockArticles.filter(article => article.category === category);
+                displayArticles(filteredArticles);
+            }
+        }
+
+        function initSuggestionForm() {
+            const suggestForm = document.getElementById('suggestForm');
+            const suggestMessage = document.getElementById('suggestMessage');
+            
+            if (!suggestForm) return;
+            
+            suggestForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const topic = this.topic.value.trim();
+                const category = this.category.value;
+                const description = this.description.value.trim();
+                const email = this.email.value.trim();
+                const consent = this.consent.checked;
+                
+                // Validation
+                if (!topic || !category || !description || !consent) {
+                    showFormMessage('Please fill in all required fields and provide consent.', 'error', suggestMessage);
+                    return;
+                }
+                
+                if (description.length < 20) {
+                    showFormMessage('Please provide more details about your suggestion (at least 20 characters).', 'error', suggestMessage);
+                    return;
+                }
+                
+                // Show loading
+                const submitBtn = this.querySelector('.form-submit');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+                submitBtn.disabled = true;
+                
+                // Simulate submission
+                setTimeout(() => {
+                    // In Phase 2, send to backend
+                    showFormMessage('Thank you for your suggestion! Our educational team will review it.', 'success', suggestMessage);
+                    
+                    // Reset form
+                    suggestForm.reset();
+                    
+                    // Restore button
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    
+                    // Update stats
+                    updateEducationStats();
+                    
+                    // Scroll to message
+                    suggestMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 1500);
+            });
+        }
+
+        function initLearningPath() {
+            const startLearningPath = document.getElementById('startLearningPath');
+            
+            if (startLearningPath) {
+                startLearningPath.addEventListener('click', function() {
+                    // Reset progress for all articles
+                    mockArticles.forEach(article => {
+                        article.progress = 0;
+                    });
+                    
+                    // Show starting articles (foundation level)
+                    document.querySelector('.filter-tab[data-category="sexual-health"]').click();
+                    
+                    showNotification('Starting your learning journey! Begin with Sexual Health fundamentals.', 'success');
+                    
+                    // Scroll to articles
+                    document.querySelector('.featured-articles').scrollIntoView({ behavior: 'smooth' });
+                });
+            }
+        }
+
+        function initLearningPathButtons() {
+            // Add click handlers to learning path buttons
+            const pathButtons = document.querySelectorAll('.path-steps .btn-small');
+            pathButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const category = this.dataset.category;
+                    
+                    // Update active tab
+                    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelector(`.filter-tab[data-category="${category}"]`).classList.add('active');
+                    
+                    // Filter articles
+                    filterArticlesByCategory(category);
+                    
+                    // Update active filter display
+                    const activeFilterDisplay = document.getElementById('activeFilterDisplay');
+                    const activeCategory = document.getElementById('activeCategory');
+                    activeFilterDisplay.style.display = 'block';
+                    
+                    // Get category name from button text
+                    const stepTitle = this.closest('.path-step').querySelector('.path-step-title').textContent;
+                    activeCategory.textContent = stepTitle;
+                    
+                    // Scroll to articles
+                    document.querySelector('.featured-articles').scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+        }
+
+        function updateEducationStats() {
+            // Update article count
+            const totalArticles = document.getElementById('totalArticles');
+            if (totalArticles) {
+                totalArticles.textContent = mockArticles.length;
+            }
+            
+            // Update favorites count
+            const totalFavorites = document.getElementById('totalFavorites');
+            if (totalFavorites) {
+                const favorites = JSON.parse(localStorage.getItem('educationFavorites')) || [];
+                totalFavorites.textContent = favorites.length;
+            }
+            
+            // Update completion rate
+            const completionRate = document.getElementById('completionRate');
+            if (completionRate) {
+                const completedArticles = mockArticles.filter(article => article.progress === 100).length;
+                const rate = Math.round((completedArticles / mockArticles.length) * 100);
+                completionRate.textContent = `${rate}%`;
+            }
+        }
+
+        function showFormMessage(message, type, container) {
+            if (!container) return;
+            
+            container.textContent = message;
+            container.className = `form-message ${type}`;
+            container.style.display = 'block';
+            
+            setTimeout(() => {
+                container.style.display = 'none';
+            }, 5000);
+        }
+
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            // Style the notification
+            const typeColors = {
+                success: '#00c853',
+                error: '#ff5252',
+                warning: '#ff9800',
+                info: '#2196f3'
+            };
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background-color: ${typeColors[type]}15;
+                color: ${typeColors[type]};
+                padding: 12px 20px;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                z-index: 10000;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                border: 1px solid ${typeColors[type]}30;
+                animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s;
+                max-width: 350px;
+            `;
+            
+            // Add to document
+            document.body.appendChild(notification);
+            
+            // Add CSS for animations if not already added
+            if (!document.querySelector('#education-notification-styles')) {
+                const style = document.createElement('style');
+                style.id = 'education-notification-styles';
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes fadeOut {
+                        from { opacity: 1; }
+                        to { opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // Remove notification after animation
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 3000);
+        }
+
+        // Enhanced mock data for education - 4 articles per category (24 total)
+        const mockArticles = [
+            // ===== SEXUAL HEALTH (4 articles) =====
+            {
+                id: 1,
+                title: "Understanding Sexual Health Basics",
+                excerpt: "A comprehensive guide to maintaining sexual health, including regular check-ups and preventative measures.",
+                category: "sexual-health",
+                author: "Dr. Alex Morgan",
+                date: "2023-10-15",
+                image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=250&fit=crop",
+                readTime: 8,
+                views: 1245,
+                difficulty: 2,
+                progress: 25,
+                featured: true
+            },
+            {
+                id: 2,
+                title: "STI Prevention and Testing Guide",
+                excerpt: "Everything you need to know about preventing and testing for sexually transmitted infections.",
+                category: "sexual-health",
+                author: "Dr. Samira Chen",
+                date: "2023-09-10",
+                image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=250&fit=crop",
+                readTime: 11,
+                views: 945,
+                difficulty: 3,
+                progress: 0,
+                featured: false
+            },
+            {
+                id: 3,
+                title: "Reproductive Health Essentials",
+                excerpt: "Understanding fertility, contraception, and reproductive system health for all genders.",
+                category: "sexual-health",
+                author: "Dr. Marcus Lee",
+                date: "2023-08-25",
+                image: "https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=400&h=250&fit=crop",
+                readTime: 10,
+                views: 876,
+                difficulty: 3,
+                progress: 0,
+                featured: false
+            },
+            {
+                id: 4,
+                title: "Sexual Health Screenings: What to Expect",
+                excerpt: "Demystifying sexual health examinations and regular check-ups for peace of mind.",
+                category: "sexual-health",
+                author: "Jordan Taylor",
+                date: "2023-08-10",
+                image: "https://images.unsplash.com/photo-1516549655669-df6654e435de?w=400&h=250&fit=crop",
+                readTime: 7,
+                views: 654,
+                difficulty: 2,
+                progress: 50,
+                featured: false
+            },
+            
+            // ===== RELATIONSHIPS & COMMUNICATION (4 articles) =====
+            {
+                id: 5,
+                title: "Communication in Intimate Relationships",
+                excerpt: "Learn how to build healthy communication patterns for all relationship structures.",
+                category: "relationships",
+                author: "Dr. Samira Chen",
+                date: "2023-10-10",
+                image: "https://images.unsplash.com/photo-1516585427167-9f4af9627e6c?w=400&h=250&fit=crop",
+                readTime: 12,
+                views: 987,
+                difficulty: 3,
+                progress: 0,
+                featured: false
+            },
+            {
+                id: 6,
+                title: "Non-Monogamy Communication Skills",
+                excerpt: "Navigating ethical non-monogamous relationships with clear communication and boundaries.",
+                category: "relationships",
+                author: "Jordan Taylor",
+                date: "2023-09-05",
+                image: "https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?w=400&h=250&fit=crop",
+                readTime: 13,
+                views: 654,
+                difficulty: 4,
+                progress: 0,
+                featured: false
+            },
+            {
+                id: 7,
+                title: "Conflict Resolution in Partnerships",
+                excerpt: "Healthy ways to navigate disagreements and maintain connection during conflict.",
+                category: "relationships",
+                author: "Dr. Alex Morgan",
+                date: "2023-08-20",
+                image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400&h=250&fit=crop",
+                readTime: 9,
+                views: 543,
+                difficulty: 3,
+                progress: 0,
+                featured: false
+            },
+            {
+                id: 8,
+                title: "Building Emotional Intimacy",
+                excerpt: "Creating deep emotional connections that enhance physical intimacy.",
+                category: "relationships",
+                author: "Dr. Marcus Lee",
+                date: "2023-08-05",
+                image: "https://images.unsplash.com/photo-1519452639340-7f0d5e4c0eb8?w=400&h=250&fit=crop",
+                readTime: 11,
+                views: 432,
+                difficulty: 3,
+                progress: 25,
+                featured: false
+            },
+            
+            // ===== ORIENTATION AWARENESS (4 articles) =====
+            {
+                id: 9,
+                title: "LGBTQ+ Orientation Awareness Guide",
+                excerpt: "Understanding diverse sexual orientations and gender identities for inclusive relationships.",
+                category: "orientation",
+                author: "Jordan Taylor",
+                date: "2023-10-05",
+                image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=250&fit=crop",
+                readTime: 15,
+                views: 1543,
+                difficulty: 3,
+                progress: 50,
+                featured: true
+            },
+            {
+                id: 10,
+                title: "Gender Identity Exploration Guide",
+                excerpt: "Supporting individuals through gender exploration and affirmation processes.",
+                category: "orientation",
+                author: "Dr. Marcus Lee",
+                date: "2023-08-28",
+                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop",
+                readTime: 16,
+                views: 1123,
+                difficulty: 4,
+                progress: 0,
+                featured: false
+            },
+            {
+                id: 11,
+                title: "Asexual and Aromantic Spectrums",
+                excerpt: "Understanding asexuality, aromanticism, and diverse relationship orientations.",
+                category: "orientation",
+                author: "Jordan Taylor",
+                date: "2023-08-15",
+                image: "https://images.unsplash.com/photo-1491349174775-aaafddd81942?w=400&h=250&fit=crop",
+                readTime: 12,
+                views: 765,
+                difficulty: 4,
+                progress: 0,
+                featured: false
+            },
+            {
+                id: 12,
+                title: "Coming Out and Self-Acceptance",
+                excerpt: "Navigating the coming out process and building self-acceptance.",
+                category: "orientation",
+                author: "Dr. Samira Chen",
+                date: "2023-08-01",
+                image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=250&fit=crop",
+                readTime: 14,
+                views: 987,
+                difficulty: 3,
+                progress: 0,
+                featured: false
+            },
+            
+            // ===== SAFETY & CONSENT (4 articles) =====
+            {
+                id: 13,
+                title: "Consent and Boundaries 101",
+                excerpt: "Essential guide to understanding and practicing enthusiastic consent in all interactions.",
+                category: "safety",
+                author: "Dr. Marcus Lee",
+                date: "2023-09-28",
+                image: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=400&h=250&fit=crop",
+                readTime: 10,
+                views: 2100,
+                difficulty: 2,
+                progress: 100,
+                featured: false
+            },
+            {
+                id: 14,
+                title: "Digital Safety and Intimacy",
+                excerpt: "Protecting your privacy and safety in digital intimate spaces and dating apps.",
+                category: "safety",
+                author: "IntimaWell Team",
+                date: "2023-08-20",
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop",
+                readTime: 9,
+                views: 765,
+                difficulty: 2,
+                progress: 50,
+                featured: false
+            },
+            {
+                id: 15,
+                title: "Safer Sex Practices Guide",
+                excerpt: "Comprehensive guide to barrier methods, lubrication, and risk reduction.",
+                category: "safety",
+                author: "Dr. Alex Morgan",
+                date: "2023-08-12",
+                image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=400&h=250&fit=crop",
+                readTime: 8,
+                views: 654,
+                difficulty: 2,
+                progress: 0,
+                featured: false
+            },
+            {
+                id: 16,
+                title: "Recognizing and Addressing Coercion",
+                excerpt: "Identifying coercive behaviors and maintaining personal boundaries.",
+                category: "safety",
+                author: "Dr. Samira Chen",
+                date: "2023-08-05",
+                image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=250&fit=crop",
+                readTime: 11,
+                views: 543,
+                difficulty: 3,
+                progress: 0,
+                featured: false
+            },
+            
+            // ===== PRODUCT EDUCATION (4 articles) =====
+            {
+                id: 17,
+                title: "Choosing Your First Adult Product",
+                excerpt: "A beginner's guide to selecting safe, comfortable products for personal wellness.",
+                category: "products",
+                author: "IntimaWell Team",
+                date: "2023-09-20",
+                image: "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=400&h=250&fit=crop",
+                readTime: 6,
+                views: 876,
+                difficulty: 1,
+                progress: 0,
+                featured: false
+            },
+            {
+                id: 18,
+                title: "Product Maintenance and Care Guide",
+                excerpt: "How to properly clean and maintain your adult products for longevity and safety.",
+                category: "products",
+                author: "Dr. Alex Morgan",
+                date: "2023-08-15",
+                image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=250&fit=crop",
+                readTime: 7,
+                views: 432,
+                difficulty: 2,
+                progress: 0,
+                featured: false
+            },
+            {
+                id: 19,
+                title: "Lubricants: Types and Uses",
+                excerpt: "Understanding different lubricant types and when to use them.",
+                category: "products",
+                author: "Jordan Taylor",
+                date: "2023-08-10",
+                image: "https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400&h=250&fit=crop",
+                readTime: 5,
+                views: 321,
+                difficulty: 1,
+                progress: 0,
+                featured: false
+            },
+            {
+                id: 20,
+                title: "Couples Products for Enhanced Intimacy",
+                excerpt: "Products designed to enhance connection and shared experiences.",
+                category: "products",
+                author: "Dr. Marcus Lee",
+                date: "2023-08-05",
+                image: "https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?w=400&h=250&fit=crop",
+                readTime: 8,
+                views: 654,
+                difficulty: 2,
+                progress: 0,
+                featured: false
+            },
+            
+            // ===== INTIMATE WELLNESS (4 articles) =====
+            {
+                id: 21,
+                title: "Holistic Intimate Wellness",
+                excerpt: "Combining physical, emotional, and mental aspects for complete intimate wellbeing.",
+                category: "wellness",
+                author: "Dr. Alex Morgan",
+                date: "2023-09-15",
+                image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=250&fit=crop",
+                readTime: 14,
+                views: 1321,
+                difficulty: 4,
+                progress: 75,
+                featured: true
+            },
+            {
+                id: 22,
+                title: "Mindfulness and Intimacy",
+                excerpt: "Incorporating mindfulness practices to enhance intimate connections and self-awareness.",
+                category: "wellness",
+                author: "Dr. Samira Chen",
+                date: "2023-08-10",
+                image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=250&fit=crop",
+                readTime: 10,
+                views: 889,
+                difficulty: 3,
+                progress: 0,
+                featured: false
+            },
+            {
+                id: 23,
+                title: "Body Positivity and Sexual Confidence",
+                excerpt: "Building confidence and positive body image for fulfilling intimate experiences.",
+                category: "wellness",
+                author: "Jordan Taylor",
+                date: "2023-08-05",
+                image: "https://images.unsplash.com/photo-1519452639340-7f0d5e4c0eb8?w=400&h=250&fit=crop",
+                readTime: 9,
+                views: 765,
+                difficulty: 3,
+                progress: 0,
+                featured: false
+            },
+            {
+                id: 24,
+                title: "Sexual Health Through Different Life Stages",
+                excerpt: "Navigating sexual wellness from young adulthood through older age.",
+                category: "wellness",
+                author: "Dr. Marcus Lee",
+                date: "2023-08-01",
+                image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=250&fit=crop",
+                readTime: 12,
+                views: 543,
+                difficulty: 3,
+                progress: 0,
+                featured: false
+            }
+        ];
+    </script>
+</body>
+</html>

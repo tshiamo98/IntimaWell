@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IntimaWell | Premium Sexual Wellness & Education</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚧</text></svg>">
+
+    <!-- Add to index.html head section -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics-compat.js"></script>
+</head>
+
+<body>
+<div id="ageVerification" class="age-verification-modal">
+    <div class="age-verification-content">
+        <h2><i class="fas fa-palette"></i> Welcome to IntimaWell</h2>
+        <p>Before you enter, please verify your age and choose your preferred theme.</p>
+        
+        <!-- Age Verification -->
+        <div class="age-section">
+            <h3><i class="fas fa-exclamation-circle"></i> Age Verification</h3>
+            <p class="age-note">This website contains content related to sexual wellness and adult products. You must be 18 years or older to enter.</p>
+            
+            <div class="age-verification-buttons">
+                <button id="confirmAge" class="btn-primary">
+                    <i class="fas fa-check-circle"></i> I am 18 or older
+                </button>
+                <button id="exitSite" class="btn-secondary">
+                    <i class="fas fa-times-circle"></i> I am under 18
+                </button>
+            </div>
+        </div>
+        
+        <!-- Theme Selection -->
+        <div class="theme-section">
+            <h3><i class="fas fa-star"></i> Choose Your Theme</h3>
+            <p class="theme-note">Select a theme that matches your style. You can change this anytime from the palette icon <i class="fas fa-palette"></i> in the navigation.</p>
+            
+            <div class="age-verification-themes" id="ageThemeOptions">
+                <div class="age-theme-option" data-theme="girly">
+                    <div class="age-theme-preview" style="background: linear-gradient(45deg, #ff6b9d, #ba68c8);"></div>
+                    <div class="age-theme-label">Girly</div>
+                    <div class="theme-description">Soft pinks & purples with floral elegance</div>
+                </div>
+                
+                <div class="age-theme-option" data-theme="lgbt">
+                    <div class="age-theme-preview" style="background: linear-gradient(45deg, #e40303, #ff8c00, #ffed00, #008026, #004dff, #750787);"></div>
+                    <div class="age-theme-label">LGBT+Q</div>
+                    <div class="theme-description">Vibrant rainbow colors celebrating diversity</div>
+                </div>
+                
+                <div class="age-theme-option" data-theme="manly">
+                    <div class="age-theme-preview" style="background: linear-gradient(45deg, #2c3e50, #3498db);"></div>
+                    <div class="age-theme-label">Manly</div>
+                    <div class="theme-description">Bold blues & dark tones with clean lines</div>
+                </div>
+                
+                <div class="age-theme-option selected" data-theme="luxurious">
+                    <div class="age-theme-preview" style="background: linear-gradient(45deg, #8a4fff, #ff6b8b);"></div>
+                    <div class="age-theme-label">Luxurious</div>
+                    <div class="theme-description">Rich purples & pinks with premium elegance</div>
+                </div>
+            </div>
+            
+            <p class="theme-hint"><i class="fas fa-lightbulb"></i> Tip: Your theme will personalize colors, patterns, and visual elements throughout the site.</p>
+        </div>
+        
+        <div class="age-disclaimer">
+            <p>By entering, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+            <p class="theme-change-note"><i class="fas fa-sync-alt"></i> You can change your theme anytime using the palette icon <i class="fas fa-palette"></i> in the navigation.</p>
+        </div>
+    </div>
+</div>
+
+    <!-- Navigation -->
+<header class="main-header">
+    <div class="container">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">⚧</span>
+                <span class="logo-text">IntimaWell</span>
+            </a>
+            
+            <nav class="main-nav">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="education.html">Education</a></li>
+                    <li><a href="partners.html">Partners</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            
+        <div class="header-actions" id="auth-ui">
+    <!-- Search button -->
+    <button class="icon-btn" aria-label="Search">
+        <i class="fas fa-search"></i>
+    </button>
+    
+    <!-- Login button (shown when not logged in) -->
+    <button class="btn-small login-btn">Login / Sign Up</button>
+    
+    <!-- User dropdown (shown when logged in) -->
+    <div class="user-dropdown" id="user-menu" style="display: none;">
+        <div class="user-avatar">U</div>
+        <div class="user-menu">
+            <div class="user-info">
+                <div class="user-name">User Name</div>
+                <div class="user-email">user@example.com</div>
+            </div>
+            <a href="/profile" class="user-menu-item">
+                <i class="fas fa-user"></i> Profile
+            </a>
+            <a href="/orders" class="user-menu-item">
+                <i class="fas fa-shopping-bag"></i> Orders
+            </a>
+            <a href="/settings" class="user-menu-item">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="#" id="logout-btn" class="user-menu-item logout">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </div>
+    
+    <!-- Cart button -->
+    <a href="shop.html" class="icon-btn" aria-label="Shopping cart">
+        <i class="fas fa-shopping-bag"></i>
+        <span class="cart-count">0</span>
+    </a>
+
+    <!-- Theme dropdown -->
+    <div class="theme-dropdown">
+        <button class="theme-toggle" aria-label="Change theme" id="themeToggle">
+            <i class="fas fa-palette"></i>
+        </button>
+        <div class="theme-options" id="themeOptions">
+            <div class="theme-option" data-theme="girly">
+                <div class="theme-preview" style="background: linear-gradient(45deg, #ff6b9d, #ba68c8);"></div>
+                <span>Girly</span>
+            </div>
+            <div class="theme-option" data-theme="lgbt">
+                <div class="theme-preview" style="background: linear-gradient(45deg, #e40303, #ff8c00, #ffed00, #008026, #004dff, #750787);"></div>
+                <span>LGBT+Q</span>
+            </div>
+            <div class="theme-option" data-theme="manly">
+                <div class="theme-preview" style="background: linear-gradient(45deg, #2c3e50, #3498db);"></div>
+                <span>Manly</span>
+            </div>
+            <div class="theme-option" data-theme="luxurious">
+                <div class="theme-preview" style="background: linear-gradient(45deg, #8a4fff, #ff6b8b);"></div>
+                <span>Luxurious</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile menu toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle mobile menu">
+        <i class="fas fa-bars"></i>
+    </button>
+</div>
+
+        </div>
+    </div>
+    
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-header">
+            <span class="logo">IntimaWell</span>
+            <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close mobile menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="mobile-nav-list">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="education.html">Education</a></li>
+            <li><a href="partners.html">Partners</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="mobile-nav-footer">
+            <p>Confidential & Secure</p>
+            <div class="social-icons">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Embrace Your <span class="highlight">Intimate Wellbeing</span></h1>
+                <p class="hero-subtitle">A trusted destination for premium [INTIMATE_WELLNESS] products, inclusive education, and professional guidance for all sexual orientations.</p>
+                <div class="hero-actions">
+                    <a href="shop.html" class="btn-primary">Explore Products</a>
+                    <a href="education.html" class="btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <!-- Decorative abstract image - would be replaced with actual image in production -->
+                <div class="abstract-shapes">
+                    <div class="shape shape-1"></div>
+                    <div class="shape shape-2"></div>
+                    <div class="shape shape-3"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- Featured Products Section -->
+<section class="section featured-products">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Curated [ADULT_PRODUCT] Selection</h2>
+            <p class="section-subtitle">Carefully selected for quality, safety, and satisfaction. Hover over products to explore features.</p>
+        </div>
+        
+        <div class="products-grid" id="featuredProducts">
+            <!-- Featured products will be loaded dynamically by JavaScript -->
+            <!-- Enhanced product cards with: -->
+            <!-- - Multiple image thumbnails -->
+            <!-- - Favorite heart icon -->
+            <!-- - Size selection with stock count -->
+            <!-- - Quantity increment/decrement -->
+            <!-- - Info tooltip on hover -->
+            <!-- - Review/comment system -->
+            
+            <!-- Loading placeholder -->
+            <div class="product-card loading">
+                <div class="product-image-gallery">
+                    <div class="placeholder-image"></div>
+                </div>
+                <div class="product-info">
+                    <div class="product-header">
+                        <h3 class="product-title">Loading Product...</h3>
+                    </div>
+                    <div class="product-price">--.--</div>
+                    <div class="product-description">Product information is loading</div>
+                    <div class="product-sizes">
+                        <span class="size-label">Size:</span>
+                        <div class="size-options">
+                            <div class="size-option">S</div>
+                            <div class="size-option">M</div>
+                            <div class="size-option">L</div>
+                        </div>
+                    </div>
+                    <div class="product-quantity">
+                        <span class="quantity-label">Quantity:</span>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" disabled>-</button>
+                            <input type="number" class="quantity-input" value="1" disabled>
+                            <button class="quantity-btn" disabled>+</button>
+                        </div>
+                    </div>
+                    <div class="product-actions-footer">
+                        <button class="btn-small" disabled>Loading...</button>
+                        <button class="btn-small btn-secondary" disabled>Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section-footer">
+            <a href="shop.html" class="btn-secondary">View All Products</a>
+        </div>
+    </div>
+</section>
+
+    <!-- Why Choose Us Section -->
+    <section class="section why-choose-us dark-bg">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Why Choose IntimaWell</h2>
+                <p class="section-subtitle">We are committed to providing a safe, inclusive, and educational experience.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="feature-title">Inclusive</h3>
+                    <p class="feature-description">Products and resources for all sexual orientations, gender identities, and relationship dynamics.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Safe & Discreet</h3>
+                    <p class="feature-description">All products are body-safe, and all shipments are 100% discreet and confidential.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="feature-title">Expert Education</h3>
+                    <p class="feature-description">Evidence-based sexual health information from certified [PARTNER_SPECIALIST].</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 class="feature-title">Trusted Partners</h3>
+                    <p class="feature-description">Collaboration with certified sexual wellness professionals and educators.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partners Preview Section -->
+    <section class="section partners-preview">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Trusted [PARTNER_SPECIALIST] Network</h2>
+                <p class="section-subtitle">Connecting you with certified professionals for guidance and support.</p>
+            </div>
+            
+            <div class="partners-grid" id="featuredPartners">
+                <!-- Partners will be loaded dynamically by JavaScript -->
+                <!-- Placeholder content while loading -->
+                <div class="partner-card">
+                    <div class="partner-image placeholder-image"></div>
+                    <div class="partner-info">
+                        <h3 class="partner-name">Dr. Alex Morgan</h3>
+                        <p class="partner-specialty">Sexual Health Specialist</p>
+                        <p class="partner-bio">10+ years experience in [ORIENTATION_AWARENESS] and wellness counseling.</p>
+                        <a href="partners.html" class="btn-small">View Profile</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-footer">
+                <a href="partners.html" class="btn-primary">Meet All Partners</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Begin Your Journey to [INTIMATE_WELLNESS]</h2>
+                <p class="cta-text">Explore our curated collection or learn more about sexual health and safe practices.</p>
+                <div class="cta-actions">
+                    <a href="shop.html" class="btn-primary">Shop Now</a>
+                    <a href="education.html" class="btn-secondary">Browse Education</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="main-footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col footer-about">
+                <a href="index.html" class="logo">
+                    <span class="logo-icon">⚧</span>
+                    <span class="logo-text">IntimaWell</span>
+                </a>
+                <p class="footer-description">A premium destination for [INTIMATE_WELLNESS] products, inclusive education, and professional guidance for all sexual orientations.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-col">
+                <h3 class="footer-title">Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="education.html">Education</a></li>
+                    <li><a href="partners.html">Partners</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3 class="footer-title">Information</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Shipping Policy</a></li>
+                    <li><a href="#">Returns & Exchanges</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Age Verification</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3 class="footer-title">Contact Us</h3>
+                <ul class="footer-contact">
+                    <li><i class="fas fa-envelope"></i> info@intimawell.com</li>
+                    <li><i class="fas fa-phone"></i> +27 21 123 4567</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Cape Town, South Africa</li>
+                </ul>
+                <p class="footer-note">All communications are confidential and secure.</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p class="copyright">© 2023 IntimaWell. All rights reserved. For adults 18+ only.</p>
+            <p class="disclaimer">This website contains educational content about sexual wellness and [ADULT_PRODUCT]. Please consult a healthcare professional for personal medical advice.</p>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<!-- Auth Modal -->
+<div id="auth-modal" class="auth-modal">
+  <div class="auth-modal-content">
+    <button class="auth-modal-close">
+      <i class="fas fa-times"></i>
+    </button>
+    
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-tab="login">Login</button>
+      <button class="auth-tab" data-tab="signup">Sign Up</button>
+    </div>
+    
+    <div class="auth-form-container">
+      <!-- Login Form -->
+      <form id="login-form" class="auth-form active">
+        <h3 class="auth-form-title">Welcome Back</h3>
+        <p class="auth-form-subtitle">Please login to your account</p>
+        
+        <div id="auth-error" class="auth-error"></div>
+        <div id="auth-success" class="auth-success"></div>
+        
+        <div class="form-group">
+          <label for="login-email">Email Address</label>
+          <input type="email" id="login-email" placeholder="you@example.com" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="••••••••" required>
+        </div>
+        
+        <div class="auth-form-options">
+          <div class="remember-me">
+            <input type="checkbox" id="remember-me">
+            <label for="remember-me">Remember me</label>
+          </div>
+          <a href="#" id="forgot-password" class="forgot-password">Forgot Password?</a>
+        </div>
+        
+        <button type="submit" class="auth-submit-btn">Login</button>
+        
+        <div class="auth-divider">
+          <span>Or continue with</span>
+        </div>
+        
+        <div class="auth-social">
+          <button type="button" class="social-auth-btn google" data-provider="google">
+            <i class="fab fa-google"></i> Google
+          </button>
+          <button type="button" class="social-auth-btn facebook" data-provider="facebook">
+            <i class="fab fa-facebook"></i> Facebook
+          </button>
+        </div>
+        
+        <p class="auth-switch">
+          Don't have an account? <a href="#" data-tab="signup">Sign Up</a>
+        </p>
+      </form>
+      
+      <!-- Sign Up Form -->
+      <form id="signup-form" class="auth-form">
+        <h3 class="auth-form-title">Create Account</h3>
+        <p class="auth-form-subtitle">Join our community today</p>
+        
+        <div id="signup-error" class="auth-error"></div>
+        <div id="signup-success" class="auth-success"></div>
+        
+        <div class="form-group">
+          <label for="signup-name">Full Name</label>
+          <input type="text" id="signup-name" placeholder="John Doe" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="signup-email">Email Address</label>
+          <input type="email" id="signup-email" placeholder="you@example.com" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" placeholder="••••••••" required>
+          <small style="color: var(--color-gray); font-size: 0.75rem; display: block; margin-top: 4px;">
+            Must be at least 6 characters
+          </small>
+        </div>
+        
+        <div class="form-group">
+          <label for="signup-confirm-password">Confirm Password</label>
+          <input type="password" id="signup-confirm-password" placeholder="••••••••" required>
+        </div>
+        
+        <div class="form-group">
+          <div class="form-consent">
+            <input type="checkbox" id="agree-terms" required>
+            <label for="agree-terms">
+              I agree to the <a href="/terms" style="color: var(--color-primary-light);">Terms of Service</a> and <a href="/privacy" style="color: var(--color-primary-light);">Privacy Policy</a>
+            </label>
+          </div>
+        </div>
+        
+        <button type="submit" class="auth-submit-btn">Create Account</button>
+        
+        <div class="auth-divider">
+          <span>Or sign up with</span>
+        </div>
+        
+        <div class="auth-social">
+          <button type="button" class="social-auth-btn google" data-provider="google">
+            <i class="fab fa-google"></i> Google
+          </button>
+          <button type="button" class="social-auth-btn facebook" data-provider="facebook">
+            <i class="fab fa-facebook"></i> Facebook
+          </button>
+        </div>
+        
+        <p class="auth-switch">
+          Already have an account? <a href="#" data-tab="login">Login</a>
+        </p>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Firebase SDKs are already in head -->
+<!-- Your scripts -->
+<script src="firebase-config.js"></script>
+<script src="auth.js"></script>
+<script src="auth-ui.js"></script>
+<script src="script.js"></script>
+
+<!-- Note: You have duplicate Firebase SDK loading in head - remove one set -->
+
+<!-- Add Font Awesome for icons if not already included -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+<script src="script.js"></script>
+
+</body> </html>
+
+</html>

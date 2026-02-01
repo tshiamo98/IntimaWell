@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partners | IntimaWell | Certified Sexual Wellness Specialists</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚧</text></svg>">
+
+        <!-- Firebase SDK -->
+        <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <span class="logo-icon">⚧</span>
+                    <span class="logo-text">IntimaWell</span>
+                </a>
+  
+                            <nav class="main-nav">
+                <ul class="nav-list">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="education.html">Education</a></li>
+                    <li><a href="partners.html" class="active">Partners</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-actions">
+                <button class="icon-btn" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="shop.html" class="icon-btn" aria-label="Shopping cart">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count">0</span>
+                </a>
+
+
+        <!-- Add this inside header-actions div, after cart icon -->
+        <div class="theme-dropdown">
+            <button class="theme-toggle" aria-label="Change theme" id="themeToggle">
+                <i class="fas fa-palette"></i>
+            </button>
+            <div class="theme-options" id="themeOptions">
+                <div class="theme-option" data-theme="girly">
+                    <div class="theme-preview" style="background: linear-gradient(45deg, #ff6b9d, #ba68c8);"></div>
+                    <span>Girly</span>
+                </div>
+                <div class="theme-option" data-theme="lgbt">
+                    <div class="theme-preview" style="background: linear-gradient(45deg, #e40303, #ff8c00, #ffed00, #008026, #004dff, #750787);"></div>
+                    <span>LGBT+Q</span>
+                </div>
+                <div class="theme-option" data-theme="manly">
+                    <div class="theme-preview" style="background: linear-gradient(45deg, #2c3e50, #3498db);"></div>
+                    <span>Manly</span>
+                </div>
+                <div class="theme-option" data-theme="luxurious">
+                    <div class="theme-preview" style="background: linear-gradient(45deg, #8a4fff, #ff6b8b);"></div>
+                    <span>Luxurious</span>
+                </div>
+            </div>
+        </div>
+
+
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle mobile menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-header">
+            <span class="logo">IntimaWell</span>
+            <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close mobile menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="mobile-nav-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="education.html">Education</a></li>
+            <li><a href="partners.html" class="active">Partners</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="mobile-nav-footer">
+            <p>Confidential & Secure</p>
+            <div class="social-icons">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main>
+    <!-- Partners Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">Our [PARTNER_SPECIALIST] Network</h1>
+            <p class="page-subtitle">Certified professionals providing expert guidance on sexual wellness, health, and [INTIMATE_WELLNESS].</p>
+        </div>
+    </section>
+
+    <!-- Partners Introduction -->
+    <section class="section partners-intro">
+        <div class="container">
+            <div class="intro-content">
+                <h2 class="section-title">Collaborating with Experts</h2>
+                <p>At IntimaWell, we partner with certified sexual health professionals, educators, and therapists to ensure our content, products, and services are evidence-based, inclusive, and supportive of all sexual orientations.</p>
+                <p>Our [PARTNER_SPECIALIST] network includes professionals specializing in:</p>
+                
+                <div class="specialties-grid">
+                    <div class="specialty">
+                        <i class="fas fa-user-md"></i>
+                        <span>Sexual Medicine</span>
+                    </div>
+                    <div class="specialty">
+                        <i class="fas fa-comments"></i>
+                        <span>Sex Therapy</span>
+                    </div>
+                    <div class="specialty">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>Sex Education</span>
+                    </div>
+                    <div class="specialty">
+                        <i class="fas fa-rainbow"></i>
+                        <span>LGBTQ+ Health</span>
+                    </div>
+                    <div class="specialty">
+                        <i class="fas fa-heart"></i>
+                        <span>Relationship Counseling</span>
+                    </div>
+                    <div class="specialty">
+                        <i class="fas fa-balance-scale"></i>
+                        <span>Ethical Product Design</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partners Grid -->
+    <section class="section partners-grid-section dark-bg">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Meet Our Partners</h2>
+                <p class="section-subtitle">Click on any partner to learn more about their expertise and services.</p>
+            </div>
+            
+            <div class="partners-grid" id="partnersGrid">
+                <!-- Partners will be loaded dynamically by JavaScript -->
+                <!-- Loading placeholder -->
+                <div class="partner-card loading">
+                    <div class="partner-image placeholder-image"></div>
+                    <div class="partner-info">
+                        <h3 class="partner-name">Loading...</h3>
+                        <p class="partner-specialty">Specialty</p>
+                        <p class="partner-bio">Partner information is loading...</p>
+                        <button class="btn-small" disabled>Loading...</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partner Modal (Hidden by default) -->
+    <div id="partnerModal" class="partner-modal">
+        <div class="partner-modal-content">
+            <button class="modal-close" id="modalClose" aria-label="Close modal">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="modal-body">
+                <div class="modal-partner-image">
+                    <div class="placeholder-image"></div>
+                </div>
+                
+                <div class="modal-partner-info">
+                    <h2 id="modalPartnerName" class="modal-partner-name">Partner Name</h2>
+                    <p id="modalPartnerTitle" class="modal-partner-title">Professional Title</p>
+                    
+                    <div class="modal-partner-details">
+                        <h3>About</h3>
+                        <p id="modalPartnerBio">Full bio will appear here.</p>
+                        
+                        <h3>Credentials</h3>
+                        <ul id="modalPartnerCredentials">
+                            <li>Credential 1</li>
+                            <li>Credential 2</li>
+                        </ul>
+                        
+                        <h3>Specialties</h3>
+                        <div class="specialty-tags" id="modalPartnerSpecialties">
+                            <span class="specialty-tag">Specialty 1</span>
+                            <span class="specialty-tag">Specialty 2</span>
+                        </div>
+                        
+                        <h3>Contact & Services</h3>
+                        <p id="modalPartnerServices">Service information will appear here.</p>
+                        <p class="disclaimer-note">Note: Partner services are independent of IntimaWell. Please contact partners directly for appointments.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Partnership Opportunities -->
+    <section class="section partnership-opportunities">
+        <div class="container">
+            <div class="opportunities-content">
+                <div class="opportunities-text">
+                    <h2 class="section-title">Become a Partner</h2>
+                    <p>Are you a certified sexual health professional, educator, or therapist interested in collaborating with IntimaWell?</p>
+                    <p>We're always looking to expand our network of [PARTNER_SPECIALIST] to provide more comprehensive resources and support for our community.</p>
+                    
+                    <div class="opportunity-benefits">
+                        <h3>Partnership Benefits:</h3>
+                        <ul>
+                            <li>Connect with a diverse audience seeking professional guidance</li>
+                            <li>Contribute to evidence-based [EDUCATIONAL_CONTENT]</li>
+                            <li>Access to exclusive professional development resources</li>
+                            <li>Collaboration with other experts in the field</li>
+                        </ul>
+                    </div>
+                    
+                    <a href="contact.html" class="btn-primary">Inquire About Partnership</a>
+                </div>
+                
+                <div class="opportunities-image">
+                    <!-- Placeholder for partnership graphic -->
+                    <div class="placeholder-image opportunities-img"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer - Same as index.html -->
+<footer class="main-footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col footer-about">
+                <a href="index.html" class="logo">
+                    <span class="logo-icon">⚧</span>
+                    <span class="logo-text">IntimaWell</span>
+                </a>
+                <p class="footer-description">A premium destination for [INTIMATE_WELLNESS] products, inclusive education, and professional guidance for all sexual orientations.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-col">
+                <h3 class="footer-title">Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="education.html">Education</a></li>
+                    <li><a href="partners.html">Partners</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3 class="footer-title">Information</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Shipping Policy</a></li>
+                    <li><a href="#">Returns & Exchanges</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Age Verification</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3 class="footer-title">Contact Us</h3>
+                <ul class="footer-contact">
+                    <li><i class="fas fa-envelope"></i> info@intimawell.com</li>
+                    <li><i class="fas fa-phone"></i> +27 21 123 4567</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Cape Town, South Africa</li>
+                </ul>
+                <p class="footer-note">All communications are confidential and secure.</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p class="copyright">© 2023 IntimaWell. All rights reserved. For adults 18+ only.</p>
+            <p class="disclaimer">This website contains educational content about sexual wellness and [ADULT_PRODUCT]. Please consult a healthcare professional for personal medical advice.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
