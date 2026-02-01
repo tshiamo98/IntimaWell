@@ -1,5 +1,4 @@
 // firebase-config.js
-// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBBfK4lAXxgw-WwlktWyibL_P8UCDoRJ5A",
   authDomain: "intimawell-14632.firebaseapp.com",
@@ -16,7 +15,12 @@ firebase.initializeApp(firebaseConfig);
 // Initialize services
 const auth = firebase.auth();
 const db = firebase.firestore();
-const analytics = firebase.analytics();
+
+// Optional: Initialize analytics only if not on localhost
+if (window.location.hostname !== 'localhost' && 
+    window.location.hostname !== '127.0.0.1') {
+  const analytics = firebase.analytics();
+}
 
 // Export for use in other files
 window.firebase = firebase;
