@@ -1,0 +1,12 @@
+Firestore Structure:
+- users/{userId} (already exists)
+  - userData (profile info)
+  
+- carts/{userId} (or subcollection: users/{userId}/cart)
+  - items: array of product objects
+  
+- favorites/{userId} (or subcollection: users/{userId}/favorites)
+  - items: array of product IDs or objects
+  
+- products/{productId} (we'll create this for real products)
+  - name, price, description, etc.

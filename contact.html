@@ -50,7 +50,17 @@
                     <i class="fas fa-shopping-bag"></i>
                     <span class="cart-count">0</span>
                 </a>
+             <!-- In your header-actions div, add these links after cart icon: -->
+                <a href="cart.html" class="icon-btn cart-link" aria-label="View cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
 
+                <a href="favorites.html" class="icon-btn" aria-label="View favorites" id="favoritesLink">
+                    <i class="fas fa-heart"></i>
+                    <span class="favorites-count">0</span>
+                </a>
+                
         <!-- Add this inside header-actions div, after cart icon -->
         <div class="theme-dropdown">
             <button class="theme-toggle" aria-label="Change theme" id="themeToggle">
@@ -376,6 +386,8 @@
 </footer>
 
 <script src="script.js"></script>
+<!-- Add this line to all HTML files after auth.js -->
+<script src="cart-favorites.js"></script>
        
 </body>
 

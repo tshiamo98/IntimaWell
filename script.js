@@ -102,6 +102,20 @@ function applyTheme(themeName) {
     showThemeNotification(themeName);
 }
 
+
+document.addEventListener('DOMContentLoaded', function() {
+    // ... existing initialization ...
+    
+    // Initialize cart and favorites system
+    if (typeof CartFavoritesSystem !== 'undefined') {
+        // Already initialized in cart-favorites.js
+        console.log('Cart & Favorites system initialized');
+    }
+    
+    // ... rest of your initialization ...
+});
+
+
 /**
  * Initialize theme dropdown functionality
  */
@@ -599,6 +613,174 @@ const mockProducts = [
         ]
     }
 ];
+
+
+
+// ============================================
+// INTEGRATE CART & FAVORITES WITH PRODUCT CARDS
+// ============================================
+
+/**
+ * Update the product card creation to work with cart/favorites system
+ */
+function createProductCard(product) {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.dataset.id = product.id;
+    card.dataset.category = product.category;
+    card.dataset.price = product.price < 50 ? 'low' : (product.price < 150 ? 'medium' : 'high');
+    
+    // Check if product is in favorites
+    const isFavorite = window.cartFavoritesSystem 
+        ? window.cartFavoritesSystem.isProductFavorite(product.id) 
+        : false;
+    
+    // Create sizes HTML
+    let sizesHtml = '';
+    if (product.sizes && product.sizes.length > 0) {
+        sizesHtml = `
+            <div class="product-sizes">
+                <span class="size-label">Size:</span>
+                <div class="size-options">
+                    ${product.sizes.map(size => `
+                        <div class="size-option ${size.stock <= 0 ? 'out-of-stock' : ''} ${size.default ? 'selected' : ''}" 
+                             data-size="${size.name}" 
+                             data-stock="${size.stock}">
+                            ${size.name}
+                            ${size.stock > 0 ? `<span class="stock-count">${size.stock} left</span>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+    
+    // ... rest of your existing product card HTML ...
+    // Keep your existing HTML but update the favorite button:
+    
+    const favoriteIcon = isFavorite ? 'fas fa-heart active' : 'fas fa-heart';
+    
+    card.innerHTML = `
+        <!-- Product Badge -->
+        ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
+        
+        <!-- Product Image Gallery -->
+        <div class="product-image-gallery">
+            <img src="${product.images[0]}" alt="${product.name}" class="product-main-image">
+            
+            <!-- Image Thumbnails -->
+            <div class="product-thumbnails">
+                ${product.images.map((img, index) => `
+                    <div class="product-thumbnail ${index === 0 ? 'active' : ''}" data-image-index="${index}">
+                        <img src="${img}" alt="Thumbnail ${index + 1}">
+                    </div>
+                `).join('')}
+            </div>
+            
+            <!-- Product Actions (Heart, etc.) -->
+            <div class="product-actions">
+                <button class="product-favorite ${isFavorite ? 'active' : ''}" aria-label="Add to favorites" data-action="toggle-favorite">
+                    <i class="${favoriteIcon}" style="${isFavorite ? 'color: var(--color-secondary);' : ''}"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- ... rest of your existing product card HTML ... -->
+        <!-- Make sure to include all your existing HTML from the createProductCard function -->
+        
+        <!-- Product Actions Footer - UPDATE THIS SECTION -->
+        <div class="product-actions-footer">
+            <a href="#" class="btn-small" data-action="add-to-cart">Add to Cart</a>
+            <a href="#" class="btn-small btn-secondary" data-action="view-details">View Details</a>
+        </div>
+    `;
+    
+    // Initialize product card with new handlers
+    initializeProductCard(card, product);
+    
+    return card;
+}
+
+/**
+ * Update the initializeProductCard function to use new system
+ */
+function initializeProductCard(card, product) {
+    // ... keep your existing initialization code ...
+    
+    // Add to cart functionality - UPDATE THIS
+    const addToCartBtn = card.querySelector('[data-action="add-to-cart"]');
+    if (addToCartBtn) {
+        addToCartBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
+            
+            const quantity = parseInt(card.querySelector('.quantity-input').value);
+            const selectedSize = product.selectedSize || (product.sizes && product.sizes[0]?.name);
+            
+            // Check if size is selected
+            if (product.sizes && product.sizes.length > 0 && !selectedSize) {
+                showNotification('Please select a size first', 'warning');
+                return;
+            }
+            
+            // Use the new cart system
+            if (window.cartFavoritesSystem) {
+                await window.cartFavoritesSystem.addToCart(product, quantity, selectedSize);
+            } else {
+                // Fallback to old system
+                addToCart({
+                    ...product,
+                    quantity: quantity,
+                    selectedSize: selectedSize
+                });
+            }
+        });
+    }
+    
+    // Favorite button functionality - UPDATE THIS
+    const favoriteBtn = card.querySelector('[data-action="toggle-favorite"]');
+    if (favoriteBtn) {
+        favoriteBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (window.cartFavoritesSystem) {
+                const isNowFavorite = await window.cartFavoritesSystem.toggleFavorite(product);
+                
+                if (isNowFavorite) {
+                    this.classList.add('active');
+                    const icon = this.querySelector('i');
+                    icon.classList.add('active');
+                    icon.style.color = 'var(--color-secondary)';
+                    showNotification(`Added ${product.name} to favorites`, 'success');
+                } else {
+                    this.classList.remove('active');
+                    const icon = this.querySelector('i');
+                    icon.classList.remove('active');
+                    icon.style.color = '';
+                    showNotification(`Removed ${product.name} from favorites`, 'info');
+                }
+            } else {
+                // Fallback to old system
+                const isFavorite = this.classList.toggle('active');
+                const icon = this.querySelector('i');
+                
+                if (isFavorite) {
+                    icon.style.color = 'var(--color-secondary)';
+                    addToFavorites(product);
+                    showFavoriteNotification(`Added ${product.name} to favorites`);
+                } else {
+                    icon.style.color = '';
+                    removeFromFavorites(product.id);
+                    showFavoriteNotification(`Removed ${product.name} from favorites`);
+                }
+            }
+        });
+    }
+    
+    // ... rest of your existing initialization code ...
+}
+
+
 /**
  * Mock data for educational articles
  */

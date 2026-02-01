@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart | IntimaWell</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚧</text></svg>">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics-compat.js"></script>
+</head>
+<body>
+    <!-- Age Verification (same as index.html) -->
+    <div id="ageVerification" class="age-verification-modal">
+        <!-- Copy from index.html -->
+    </div>
+
+    <!-- Navigation (same as index.html) -->
+    <header class="main-header">
+        <!-- Copy header from index.html -->
+    </header>
+
+    <!-- Cart Page Content -->
+    <main>
+        <section class="section cart-section">
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">Your Shopping Cart</h1>
+                    <p class="page-subtitle">Review your items before checkout</p>
+                </div>
+
+                <div class="cart-content">
+                    <div class="cart-items-container">
+                        <div class="cart-header">
+                            <div class="cart-header-item product-col">Product</div>
+                            <div class="cart-header-item price-col">Price</div>
+                            <div class="cart-header-item quantity-col">Quantity</div>
+                            <div class="cart-header-item total-col">Total</div>
+                            <div class="cart-header-item actions-col"></div>
+                        </div>
+                        
+                        <div id="cartItems" class="cart-items-list">
+                            <!-- Cart items will be loaded dynamically -->
+                            <div class="cart-loading">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <p>Loading your cart...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cart-summary">
+                        <div class="summary-card">
+                            <h3 class="summary-title">Order Summary</h3>
+                            
+                            <div class="summary-row">
+                                <span>Subtotal</span>
+                                <span id="cartSubtotal">$0.00</span>
+                            </div>
+                            
+                            <div class="summary-row">
+                                <span>Shipping</span>
+                                <span>Calculated at checkout</span>
+                            </div>
+                            
+                            <div class="summary-row total">
+                                <span>Estimated Total</span>
+                                <span id="cartTotal">$0.00</span>
+                            </div>
+                            
+                            <div class="summary-actions">
+                                <button id="checkoutBtn" class="btn-primary" disabled>
+                                    <i class="fas fa-lock"></i> Proceed to Checkout
+                                </button>
+                                <a href="shop.html" class="btn-secondary">
+                                    <i class="fas fa-arrow-left"></i> Continue Shopping
+                                </a>
+                                <button id="clearCartBtn" class="btn-small btn-secondary">
+                                    <i class="fas fa-trash"></i> Clear Cart
+                                </button>
+                            </div>
+                            
+                            <div class="summary-note">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Secure & confidential checkout</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer (same as index.html) -->
+    <footer class="main-footer">
+        <!-- Copy footer from index.html -->
+    </footer>
+
+    <!-- Auth Modal (same as index.html) -->
+    <div id="auth-modal" class="auth-modal">
+        <!-- Copy auth modal from index.html -->
+    </div>
+
+    <!-- Load scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="auth.js"></script>
+    <script src="auth-ui.js"></script>
+    <script src="cart-favorites.js"></script>
+    <script src="script.js"></script>
+    
+    <script>
+        // Initialize cart page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize theme system
+            if (typeof initThemeSystem === 'function') {
+                initThemeSystem();
+            }
+            
+            // Initialize mobile navigation
+            if (typeof initMobileNavigation === 'function') {
+                initMobileNavigation();
+            }
+            
+            // Initialize age verification
+            if (typeof initAgeVerification === 'function') {
+                initAgeVerification();
+            }
+            
+            // Clear cart button
+            const clearCartBtn = document.getElementById('clearCartBtn');
+            if (clearCartBtn && window.cartFavoritesSystem) {
+                clearCartBtn.addEventListener('click', async function() {
+                    if (confirm('Are you sure you want to clear your cart?')) {
+                        await window.cartFavoritesSystem.clearCart();
+                    }
+                });
+            }
+            
+            // Checkout button
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            if (checkoutBtn) {
+                checkoutBtn.addEventListener('click', function() {
+                    showNotification('Checkout functionality coming soon!', 'info');
+                });
+            }
+            
+            // Update cart totals when cart changes
+            if (window.cartFavoritesSystem) {
+                // Listen for cart updates
+                setInterval(() => {
+                    const subtotal = window.cartFavoritesSystem.getCartTotal();
+                    const total = subtotal; // Add shipping here if needed
+                    
+                    document.getElementById('cartSubtotal').textContent = `$${subtotal.toFixed(2)}`;
+                    document.getElementById('cartTotal').textContent = `$${total.toFixed(2)}`;
+                    
+                    // Enable/disable checkout button
+                    const checkoutBtn = document.getElementById('checkoutBtn');
+                    if (checkoutBtn) {
+                        const itemCount = window.cartFavoritesSystem.getCartItemCount();
+                        checkoutBtn.disabled = itemCount === 0;
+                        checkoutBtn.textContent = itemCount === 0 
+                            ? 'Cart is Empty' 
+                            : `<i class="fas fa-lock"></i> Proceed to Checkout (${itemCount} items)`;
+                    }
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
